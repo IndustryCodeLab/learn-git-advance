@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #box {
+            width: 300px;
+            height: 50px;
+            box-shadow: 3px 3px gray;
+            font-size: 30px;
+            font-weight: bold;
+            color: gray;
+        }
+
+        button {
+            width: 50px;
+            padding: 10px;
+            background-color: rgb(95, 95, 176);
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 10px;
+        }
+
+        body {
+            background-color: rgb(95, 95, 176);
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 10px;
+            
+        }
+    </style>
+
+    <script>
+        function myBack(){
+            let boxval= document.getElementById('box').value;
+            let myval= boxval.substring(0, boxval.length-1);
+            document.getElementById("box").value=myval;
+        }
+    </script>
+</head>
+<body bgcolor="lightblue">
+    <div id="wrapper">
+        <input type="text" id="box">
+
+        <button id="btn1"
+        onclick="document.getElementById('box').value+=document.getElementById('btn1').innerHTML">1</button>
+
+        <button id="btn2"
+        onclick="document.getElementById('box').value+=document.getElementById('btn2').innerHTML">2</button>
+
+        <button id="btn3"
+        onclick="document.getElementById('box').value+=document.getElementById('btn3').innerHTML">3</button>
+
+        <button id="btn4"
+        onclick="document.getElementById('box').value+=document.getElementById('btn4').innerHTML">4</button>
+
+        <button id="btn5"
+        onclick="document.getElementById('box').value+=document.getElementById('btn5').innerHTML">5</button>
+
+        <button id="btn6"
+        onclick="document.getElementById('box').value+=document.getElementById('btn6').innerHTML">6</button>
+
+        <button id="btn7"
+        onclick="document.getElementById('box').value+=document.getElementById('btn7').innerHTML">7</button>
+
+        <button id="btn8"
+        onclick="document.getElementById('box').value+=document.getElementById('btn8').innerHTML">8</button>
+
+        <button id="btn9"
+        onclick="document.getElementById('box').value+=document.getElementById('btn9').innerHTML">9</button>
+
+        <button id="btn0"
+        onclick="document.getElementById('box').value+=document.getElementById('btn0').innerHTML">0</button>
+
+        <button>.</button>
+
+        <button id="btnplus" onclick="document.getElementById('box').value+=document.getElementById('btnplus').innerHTML">+</button>
+        <button id="btnminus" onclick="document.getElementById('box').value+=document.getElementById('btnminus').innerHTML">-</button>
+        <button id="btndevided" onclick="document.getElementById('box').value+=document.getElementById('btndevided').innerHTML">/</button>
+        <button id="btnmulti" onclick="document.getElementById('box').value+=document.getElementById('btnmulti').innerHTML">*</button>
+
+        <button onclick="document.getElementById('box').value=eval(document.getElementById('box').value)">=</button>
+        <button onclick="document.getElementById('box').value=''">AC</button>
+        <button onclick="myBack()">BK</button>
+    </div>
+</body>
+</html>
