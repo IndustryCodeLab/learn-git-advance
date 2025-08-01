@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Daily Workflow - Adi's Notes</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fdfdfd;
+      margin: 0;
+      padding: 40px;
+      color: #222;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 30px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-top: 30px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: monospace;
+    }
+
+    .example {
+      background-color: #f9f9f9;
+      padding: 12px 16px;
+      border-left: 4px solid #3498db;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Daily GitHub Workflow: Best Practices for Safe and Structured Collaboration</h1>
+
+    <h2>1. Daily Work Should Be Done on a Separate Branch (Not on <code>main</code>)</h2>
+    <p>
+      When you start new work each day, always create a new branch from <code>main</code>. This keeps the main branch clean and production-ready. By isolating changes, you can test and review code without affecting the main codebase.
+    </p>
+    <div class="example">
+      <code>git checkout -b feature-login-form</code>
+    </div>
+    <p>
+      Once work is done, push the branch and create a pull request.
+    </p>
+
+    <h2>2. Always Check Git Status Before Committing</h2>
+    <p>
+      Before committing, run <code>git status</code> to see which files are modified, staged, or untracked. This prevents mistakes like committing unwanted files or missing changes.
+    </p>
+    <div class="example">
+      <code>git status</code><br />
+      <code>git add index.html</code><br />
+      <code>git commit -m "Added login form markup"</code>
+    </div>
+    <p>
+      This step helps keep your commits clean and meaningful.
+    </p>
+
+    <h2>3. Verify Pull Request Link Before Sharing</h2>
+    <p>
+      Before you send your pull request link to the repo owner or teammate, double-check the URL. Make sure it points to the correct branch and repository, not an outdated or wrong one.
+    </p>
+    <div class="example">
+      <code>https://github.com/username/project-name/pull/42</code>
+    </div>
+    <p>
+      Always test the link in a browser before sharing.
+    </p>
+  </div>
+</body>
+</html>
