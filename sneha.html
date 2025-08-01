@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mera Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #0066cc;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 2rem;
+      background: white;
+      margin: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .about img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-right: 2rem;
+    }
+
+    .about div {
+      flex: 1;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .about {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .about img {
+        margin-bottom: 1rem;
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mera Naam</h1>
+    <p>Web Developer | Designer | Coder</p>
+  </header>
+
+  <section class="about">
+    <img src="https://via.placeholder.com/150" alt="Profile Picture" />
+    <div>
+      <h2>Mere Baare Mein</h2>
+      <p>
+        Mera naam XYZ hai. Main ek passionate web developer hoon jo modern aur responsive websites banata hai HTML, CSS, aur JavaScript ka use karke.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Mera Portfolio. Sabhi adhikar surakshit hain.</p>
+  </footer>
+</body>
+</html>
