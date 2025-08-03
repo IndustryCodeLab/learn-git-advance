@@ -1,0 +1,148 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple E-commerce Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      background-color: #222;
+      color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 24px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 16px;
+    }
+
+    main {
+      padding: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .product-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 250px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .product-box {
+      height: 150px;
+      background-color: #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .product-card h2 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .product-card p {
+      margin: 5px 0;
+      color: #444;
+    }
+
+    .product-card .desc {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .product-card button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      margin-top: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .product-card button:hover {
+      background-color: #218838;
+    }
+
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MyStore</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Products</a>
+      <a href="#">Cart</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="product-card">
+      <div class="product-box"></div>
+      <h2>Product 1</h2>
+      <p>$10.99</p>
+      <p class="desc">This is a great product.</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <div class="product-box"></div>
+      <h2>Product 2</h2>
+      <p>$15.49</p>
+      <p class="desc">Useful for daily tasks.</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <div class="product-box"></div>
+      <h2>Product 3</h2>
+      <p>$7.99</p>
+      <p class="desc">Affordable and reliable.</p>
+      <button>Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <div class="product-box"></div>
+      <h2>Product 4</h2>
+      <p>$12.00</p>
+      <p class="desc">Popular item for everyone.</p>
+      <button>Add to Cart</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 MyStore. All rights reserved.</p>
+  </footer>
+</body>
+</html>
