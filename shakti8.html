@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1> Check if object is an  array </h1>
+
+    <button onclick="checkArray()"> Check </button>
+
+    <p id="result"></p>
+
+    <script>
+
+        function checkArray(){
+
+            let myData = "hello"
+
+            if (Array.isArray(myData)){
+                document.getElementById("result").innerText = "It is an Array";
+
+            }
+
+            else {
+
+                document.getElementById("result").innerText = "It is not an array.";
+            }
+        }
+
+
+    </script>
+    
+</body>
+</html>
