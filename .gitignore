@@ -1,4 +1,10 @@
 anshuIgnore.txt
+<<<<<<< HEAD
 pawan1.txt
 .gitignore
 
+=======
+sanjaylearning.txt
+.gitignore
+.vscode
+>>>>>>> 4708109d3e1cfb4d04017e0bfa2c8636139edb91
