@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #ffe3e3, #ffc9de);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rakhi-card {
+  background-color: #fff0f5;
+  border: 3px solid #ff69b4;
+  padding: 30px;
+  text-align: center;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+  width: 90%;
+  max-width: 500px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.rakhi-card h1 {
+  color: #d63384;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.rakhi-card img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  border: 2px solid #ff69b4;
+}
+
+.message {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.signature {
+  font-style: italic;
+  color: #a52a2a;
+  font-weight: bold;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  0% {opacity: 0; transform: scale(0.8);}
+  100% {opacity: 1; transform: scale(1);}
+}
