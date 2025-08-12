@@ -1,0 +1,98 @@
+<!-- save as qr-api.html and open in browser
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QR via API</title>
+  <style>
+    /* lightweight styling */
+    .qr-container {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      font-family:system-ui, sans-serif;
+      margin:40px;
+    }
+    .qr-img {
+      width:220px;
+      height:220px;
+      border:8px solid #fff;
+      box-shadow:0 6px 18px rgba(0,0,0,.12);
+      background:white;
+    }
+    input[type="text"]{ width:320px; padding:8px; font-size:16px; }
+    button{ padding:8px 12px; font-size:15px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <div class="qr-container">
+    <h2>QR code (API)</h2>
+    <input id="data" type="text" placeholder="Enter text or URL" value="https://example.com"/>
+    <button id="make">Generate</button>
+    <img id="qr" class="qr-img" alt="QR code" src="https://api.qrserver.com/v1/create-qr-code/?data=https://example.com&size=220x220">
+  </div>
+
+  <script>
+    const input = document.getElementById('data');
+    const img = document.getElementById('qr');
+    document.getElementById('make').addEventListener('click', () => {
+      const text = encodeURIComponent(input.value || '');
+      img.src = `https://api.qrserver.com/v1/create-qr-code/?data=${text}&size=220x220`;
+    });
+    // optionally regenerate when pressing Enter:
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('make').click(); });
+  </script>
+</body>
+</html> -->
+
+
+<!-- save as qr-lib.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QR with qrcode.js</title>
+  <style>
+    
+    .card { max-width:420px; margin:40px auto; padding:18px; text-align:center;
+           font-family:system-ui, sans-serif; box-shadow:0 10px 30px rgba(0,0,0,.08);
+           border-radius:12px; background:#fff; }
+    #qrcode { margin:16px auto; }
+    input, button { padding:8px 10px; font-size:15px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h3>QR with qrcode.js</h3>
+    <input id="text" value="https://example.com" />
+    <button id="go">Generate</button>
+    <div id="qrcode"></div>
+  </div>
+
+  <!-- qrcode.js CDN (no dependencies) -->
+  <script src="https://davidshimjs.github.io/qrcodejs/qrcode.min.js"></script>
+  <script>
+    const container = document.getElementById('qrcode');
+
+    function make(text) {
+      container.innerHTML = ''; // clear old
+      new QRCode(container, {
+        text: text,
+        width: 220,
+        height: 220,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+    }
+
+    document.getElementById('go').addEventListener('click', () => make(document.getElementById('text').value));
+    // initial
+    make(document.getElementById('text').value);
+  </script>
+</body>
+</html>
+
