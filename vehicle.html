@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AutoDrive — Vehicles & Deals</title>
+  <style>
+    :root{
+      --bg:#0f172a;         /* slate-900 */
+      --card:#111827;       /* gray-900 */
+      --muted:#94a3b8;      /* slate-400 */
+      --text:#e5e7eb;       /* gray-200 */
+      --brand:#22c55e;      /* green-500 */
+      --brand-2:#06b6d4;    /* cyan-500 */
+      --accent:#a78bfa;     /* violet-400 */
+      --danger:#ef4444;     /* red-500 */
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:radial-gradient(1200px 600px at 80% -10%, rgba(167,139,250,.15), rgba(6,182,212,.1) 40%, transparent 70%), var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;}
+    a{color:inherit;text-decoration:none}
+
+    /* NAV */
+    .nav{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(180%) blur(10px);
+      background:linear-gradient(180deg, rgba(2,6,23,.9), rgba(2,6,23,.6));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav-inner{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
+    .logo-badge{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 210deg, var(--brand), var(--brand-2), var(--accent));box-shadow:inset 0 0 18px rgba(255,255,255,.25), var(--shadow)}
+    .nav-links{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
+    .nav-links a{opacity:.9;padding:8px 12px;border-radius:12px}
+    .nav-links a:hover{background:rgba(255,255,255,.06)}
+    .cta{margin-left:8px;padding:10px 14px;border-radius:14px;background:linear-gradient(90deg, var(--brand), var(--brand-2));font-weight:700;}
+
+    /* HERO */
+    .hero{max-width:1200px;margin:28px auto 0;padding:28px 20px 12px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+    .hero h1{font-size:clamp(28px, 4.2vw, 48px);line-height:1.05;margin:0 0 14px}
+    .hero p{color:var(--muted);margin:0 0 22px}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{border:0;padding:12px 16px;border-radius:14px;font-weight:700;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg, var(--brand), var(--brand-2));}
+    .btn-ghost{background:rgba(255,255,255,.06)}
+    .hero-card{background:linear-gradient(160deg, rgba(34,197,94,.25), rgba(6,182,212,.25));border:1px solid rgba(255,255,255,.12);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .hero-car{height:180px;border-radius:16px;background:linear-gradient(120deg, rgba(255,255,255,.12), rgba(255,255,255,.02));display:grid;place-items:center;font-weight:800;font-size:28px;letter-spacing:.5px}
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+    .stat{padding:12px;border-radius:14px;background:rgba(255,255,255,.06);text-align:center}
+    .stat b{display:block;font-size:20px}
+
+    /* FILTERS */
+    .filters{max-width:1200px;margin:16px auto;padding:0 20px 6px}
+    .panel{display:grid;grid-template-columns:1.5fr repeat(4, 1fr) auto;gap:10px;padding:12px;border-radius:var(--radius);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .panel input, .panel select{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0b1220;color:var(--text)}
+
+    /* GRID */
+    .grid{max-width:1200px;margin:12px auto 60px;padding:0 20px;display:grid;grid-template-columns:repeat(3, 1fr);gap:18px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .thumb{height:170px;background:linear-gradient(135deg, rgba(167,139,250,.25), rgba(34,197,94,.2));display:grid;place-items:center;font-weight:800;font-size:22px}
+    .badge{position:absolute;margin:12px 0 0 12px;background:rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;font-size:12px}
+    .body{padding:14px 14px 10px;display:flex;flex-direction:column;gap:8px}
+    .title{font-weight:800;font-size:18px}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+    .price{margin-top:6px;font-size:20px;font-weight:800}
+    .actions{display:flex;gap:10px;margin:12px 14px 14px}
+    .actions .btn{flex:1}
+
+    /* SERVICES */
+    .services{max-width:1200px;margin:0 auto 60px;padding:0 20px;display:grid;grid-template-columns:repeat(3, 1fr);gap:18px}
+    .svc{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:16px}
+
+    /* CONTACT */
+    .contact{max-width:1200px;margin:0 auto 80px;padding:0 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .contact form{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:16px;display:grid;gap:10px}
+    .contact input, .contact textarea{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0b1220;color:var(--text)}
+
+    /* FOOTER */
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:28px 20px;color:var(--muted);text-align:center}
+
+    /* RESPONSIVE */
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr}
+      .contact{grid-template-columns:1fr}
+      .panel{grid-template-columns:1fr 1fr 1fr; grid-auto-rows:auto}
+      .panel .wide{grid-column:1/-1}
+    }
+    @media (max-width:800px){
+      .grid, .services{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:560px){
+      .nav-links{display:none}
+      .grid, .services{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo"><span class="logo-badge"></span> <span>SIDAutoDrive</span></div>
+      <div class="nav-links">
+        <a href="#inventory">Inventory</a>
+        <a href="#services">Services</a>
+        <a href="#finance">Finance</a>
+        <a href="#contact" class="cta">Contact Us</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <h1>Find Your Next Ride — Fast, Simple, Smart.</h1>
+      <p>Browse new & used vehicles with transparent pricing, on-road cost estimates, and instant test-drive booking.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#inventory">Browse Inventory</a>
+        <a class="btn btn-ghost" href="#contact">Book a Test Drive</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-car">AUTO·DRIVE</div>
+      <div class="hero-stats">
+        <div class="stat"><small>In Stock</small><b>120+</b></div>
+        <div class="stat"><small>EV Options</small><b>35</b></div>
+        <div class="stat"><small>Avg. Delivery</small><b>5 days</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTERS -->
+  <section class="filters" id="inventory">
+    <div class="panel">
+      <input id="search" class="wide" placeholder="Search by make / model (e.g., Tesla, Swift, Creta)" />
+      <select id="type">
+        <option value="">All Types</option>
+        <option value="SUV">SUV</option>
+        <option value="Sedan">Sedan</option>
+        <option value="Hatchback">Hatchback</option>
+        <option value="Truck">Truck</option>
+        <option value="EV">EV</option>
+      </select>
+      <select id="sort">
+        <option value="">Sort</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="year-desc">Year: Newest</option>
+        <option value="year-asc">Year: Oldest</option>
+      </select>
+      <input id="maxPrice" type="number" min="0" step="10000" placeholder="Max Price (₹)" />
+      <button class="btn btn-primary" id="apply">Apply</button>
+    </div>
+  </section>
+
+  <!-- GRID -->
+  <section class="grid" id="cards">
+    <!-- Vehicle cards (data-* for filtering) -->
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="svc">
+      <h3>Easy Financing</h3>
+      <p class="muted">Flexible EMIs with instant pre-approval and zero hidden charges.</p>
+    </div>
+    <div class="svc">
+      <h3>Certified Pre‑Owned</h3>
+      <p>200‑point inspection, warranty options, and free 1‑year RSA.</p>
+    </div>
+    <div class="svc">
+      <h3>Doorstep Delivery</h3>
+      <p>Get your car delivered in as little as 5 days, fully sanitized.</p>
+    </div>
+  </section>
+
+  <!-- FINANCE / CTA STRIP -->
+  <section id="finance" class="hero" style="margin-top:0">
+    <div>
+      <h2 style="margin:0 0 10px">Finance made friendly.</h2>
+      <p>Estimate your EMI in seconds. Trade in your old car for the best value and save more.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#contact">Talk to Finance Expert</a>
+        <a class="btn btn-ghost" href="#inventory">See Eligible Vehicles</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-car" style="height:150px">EMI CALC</div>
+      <div class="hero-stats">
+        <div class="stat"><small>Rate From</small><b>8.5%</b></div>
+        <div class="stat"><small>Tenure</small><b>12‑84m</b></div>
+        <div class="stat"><small>Zero Down</small><b>Available</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <form id="contactForm">
+      <h3>Book a Test Drive</h3>
+      <input required placeholder="Your Name" id="name" />
+      <input required type="email" placeholder="Email" id="email" />
+      <input required placeholder="Phone" id="phone" />
+      <textarea rows="4" placeholder="Preferred car / notes"></textarea>
+      <button class="btn btn-primary" type="submit">Send Request</button>
+      <small id="formMsg" class="muted"></small>
+    </form>
+    <div class="svc">
+      <h3>Visit Our Showroom</h3>
+      <p>AutoDrive Motors, MG Road, Bengaluru, India</p>
+      <p>Mon–Sat: 9:30 AM – 7:00 PM</p>
+      <p>📞 +91 98765 43210</p>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="stat"><small>Happy Customers</small><b>10k+</b></div>
+        <div class="stat"><small>Avg Rating</small><b>4.8★</b></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> AutoDrive. Built with ♥ for speed & clarity.
+  </footer>
+
+  <script>
+    // Sample inventory data
+    const cars = [
+      { id:1, name:"Maruti Suzuki Swift VXi", type:"Hatchback", year:2023, price:720000, meta:"Petrol • Manual • 22 km/l" },
+      { id:2, name:"Hyundai Creta SX", type:"SUV", year:2024, price:1590000, meta:"Petrol • Automatic • 17 km/l" },
+      { id:3, name:"Tata Nexon EV Long Range", type:"EV", year:2024, price:1890000, meta:"Electric • Auto • 465 km" },
+      { id:4, name:"Honda City ZX", type:"Sedan", year:2023, price:1450000, meta:"Petrol • CVT • 18.4 km/l" },
+      { id:5, name:"Mahindra Scorpio N Z8", type:"SUV", year:2024, price:2100000, meta:"Diesel • Manual • 4x4" },
+      { id:6, name:"Toyota Hilux", type:"Truck", year:2023, price:3200000, meta:"Diesel • Auto • 4x4" },
+      { id:7, name:"Kia Seltos HTX+", type:"SUV", year:2024, price:1899000, meta:"Petrol • DCT • ADAS" },
+      { id:8, name:"Tesla Model 3 (Import)", type:"EV", year:2022, price:3890000, meta:"Electric • Auto • 491 km" },
+    ];
+
+    const cardsEl = document.getElementById('cards');
+    const searchEl = document.getElementById('search');
+    const typeEl = document.getElementById('type');
+    const sortEl = document.getElementById('sort');
+    const maxPriceEl = document.getElementById('maxPrice');
+    const applyBtn = document.getElementById('apply');
+
+    function money(n){
+      return '₹' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function cardTemplate(car){
+      const badge = `<span class="badge">${car.type}</span>`;
+      return `
+        <article class="card" data-type="${car.type}" data-year="${car.year}" data-price="${car.price}">
+          <div class="thumb" style="position:relative">
+            ${badge}
+            <div>${car.name.split(' ')[0]}</div>
+          </div>
+          <div class="body">
+            <div class="title">${car.name}</div>
+            <div class="meta">${car.year} · ${car.meta}</div>
+            <div class="price">${money(car.price)}</div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary">Enquire</button>
+            <button class="btn btn-ghost" onclick="alert('Test drive request for: ${car.name}')">Test Drive</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function render(list){
+      cardsEl.innerHTML = list.map(cardTemplate).join('');
+    }
+
+    function applyFilters(){
+      const q = (searchEl.value || '').toLowerCase();
+      const t = typeEl.value;
+      const mp = parseInt(maxPriceEl.value || '0', 10);
+      let list = cars.filter(c =>
+        (!q || c.name.toLowerCase().includes(q)) &&
+        (!t || c.type === t) &&
+        (!mp || c.price <= mp)
+      );
+      switch(sortEl.value){
+        case 'price-asc': list.sort((a,b)=>a.price-b.price); break;
+        case 'price-desc': list.sort((a,b)=>b.price-a.price); break;
+        case 'year-asc': list.sort((a,b)=>a.year-b.year); break;
+        case 'year-desc': list.sort((a,b)=>b.year-a.year); break;
+      }
+      render(list);
+    }
+
+    applyBtn.addEventListener('click', applyFilters);
+    [searchEl, typeEl, sortEl, maxPriceEl].forEach(el=> el.addEventListener('keydown', e=>{ if(e.key==='Enter'){applyFilters()} }));
+
+    // Initial render
+    render(cars);
+
+    // Contact form demo
+    document.getElementById('contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const msg = document.getElementById('formMsg');
+      msg.textContent = 'Thanks! Our team will reach out shortly.';
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
