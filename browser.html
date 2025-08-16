@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Web Browser</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #111828;
+      --muted: #93a3b8;
+      --text: #e5e7eb;
+      --accent: #3b82f6;
+      --accent-2: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: radial-gradient(1200px 600px at 10% -10%, #0d1b2a33, transparent), var(--bg);
+      color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      height: 100vh; display: grid; grid-template-rows: auto 1fr; gap: 10px;
+    }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      padding: 10px; display: grid; gap: 10px; background: linear-gradient(0deg, transparent, rgba(0,0,0,.25));
+    }
+
+    .toolbar {
+      background: var(--panel); border-radius: var(--radius); box-shadow: var(--shadow);
+      display: grid; grid-template-columns: auto 1fr auto auto auto auto; gap: 8px; align-items: center;
+      padding: 8px;
+    }
+
+    .btn {
+      appearance: none; border: 0; border-radius: 12px; padding: 10px; background: #0b1220; color: var(--text);
+      display: inline-grid; place-items: center; cursor: pointer; transition: transform .08s ease, background .2s ease, opacity .2s ease;
+    }
+    .btn:disabled { opacity: .35; cursor: not-allowed; }
+    .btn:hover:not(:disabled) { background: #0e172a; }
+    .btn:active:not(:disabled) { transform: translateY(1px) scale(.98); }
+
+    .address {
+      width: 100%; border: 0; outline: none; background: #0b1220; color: var(--text);
+      padding: 12px 14px; border-radius: 12px; font-size: 14px;
+    }
+
+    .status {
+      display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--muted);
+      padding: 0 6px;
+    }
+
+    .chip { padding: 6px 10px; border-radius: 999px; background: #0b1220; }
+
+    .actions { display: flex; gap: 8px; }
+
+    .go { background: var(--accent); color: white; font-weight: 600; padding: 10px 14px; }
+
+    .refresh { background: #0b1220; }
+
+    .home { background: var(--accent-2); color: #071a0e; font-weight: 700; }
+
+    .danger { background: #1b0b0b; color: #fecaca; }
+
+    .frame-wrap { padding: 10px; padding-top: 0; }
+    iframe {
+      width: 100%; height: calc(100vh - 120px); border: 0; border-radius: var(--radius); box-shadow: var(--shadow);
+      background: #0b1220;
+    }
+
+    .logo {
+      font-weight: 800; letter-spacing: .5px; color: var(--text);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 20px var(--accent);
+      display: inline-block; }
+
+    .tip { color: var(--muted); font-size: 12px; text-align: center; margin-top: -6px; }
+
+    @media (max-width: 720px) {
+      .toolbar { grid-template-columns: auto 1fr auto; grid-auto-flow: row; }
+      .actions { grid-column: 1 / -1; justify-content: space-between; }
+      .status { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="toolbar">
+      <div class="logo"><span class="dot"></span> Mini Web Browser</div>
+      <input id="address" class="address" placeholder="Enter URL or search… (e.g., https://example.com or cats)" spellcheck="false" />
+      <button id="back" class="btn" title="Back (Alt+←)">⟵</button>
+      <button id="forward" class="btn" title="Forward (Alt+→)">⟶</button>
+      <button id="refresh" class="btn refresh" title="Reload (Ctrl+R)">↻</button>
+      <div class="actions">
+        <button id="home" class="btn home" title="Home">Home</button>
+        <button id="go" class="btn go" title="Go (Enter)">Go</button>
+        <button id="stop" class="btn danger" title="Stop loading">■</button>
+      </div>
+    </div>
+    <div class="tip">Tip: You can paste a URL or type a search. Some sites block loading inside iframes (X-Frame-Options / CSP).</div>
+  </header>
+
+  <div class="frame-wrap">
+    <iframe id="view" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>
+  </div>
+
+  <script>
+    // ---- Minimal router & history ----
+    const address = document.getElementById('address');
+    const view = document.getElementById('view');
+    const backBtn = document.getElementById('back');
+    const forwardBtn = document.getElementById('forward');
+    const refreshBtn = document.getElementById('refresh');
+    const goBtn = document.getElementById('go');
+    const stopBtn = document.getElementById('stop');
+    const homeBtn = document.getElementById('home');
+
+    const HOME = 'https://duckduckgo.com/';
+
+    const historyStack = [];
+    let cursor = -1; // points to current index in historyStack
+    let loadingController = null;
+
+    function isProbablyURL(input) {
+      try { new URL(input); return true; } catch (_) {}
+      // no scheme? allow bare domains like example.com
+      const domainLike = /\.[a-z]{2,}$/i.test(input) && !input.includes(' ');
+      return domainLike;
+    }
+
+    function normalize(input) {
+      if (/^https?:\/\//i.test(input)) return input;
+      if (isProbablyURL(input)) return 'https://' + input;
+      // Treat as search query
+      const q = encodeURIComponent(input.trim());
+      return `https://duckduckgo.com/?q=${q}`;
+    }
+
+    function navigate(to, { push = true } = {}) {
+      const url = normalize(to);
+      if (push) {
+        // Trim forward history when navigating anew
+        historyStack.splice(cursor + 1);
+        historyStack.push(url);
+        cursor = historyStack.length - 1;
+      }
+      // Load into iframe
+      setSrc(url);
+      address.value = url;
+      updateNavButtons();
+    }
+
+    function setSrc(url) {
+      // Abort previous load if any
+      if (loadingController && loadingController.abort) loadingController.abort();
+      loadingController = new AbortController();
+      try {
+        // Show a lightweight loading indicator via about:blank → then set src
+        view.srcdoc = `<!doctype html><html><head><meta charset='utf-8'><meta name='color-scheme' content='dark'>
+          <style>html,body{margin:0;background:#0b1220;color:#e5e7eb;font-family:system-ui;display:grid;place-items:center;height:100vh} .spin{font:16px/1.4 system-ui;opacity:.8} @keyframes r{to{transform:rotate(360deg)}} .ico{display:inline-block;width:18px;height:18px;border:2px solid #3b82f6;border-right-color:transparent;border-radius:50%;margin-right:8px;animation:r 1s linear infinite}</style>
+        </head><body><div class='spin'><span class='ico'></span>Loading…</div></body></html>`;
+        // Setting src after a tiny delay helps paint the spinner first
+        setTimeout(() => { view.src = url; }, 30);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function updateNavButtons() {
+      backBtn.disabled = cursor <= 0;
+      forwardBtn.disabled = cursor >= historyStack.length - 1;
+    }
+
+    // ---- Controls ----
+    goBtn.addEventListener('click', () => navigate(address.value || HOME));
+    homeBtn.addEventListener('click', () => navigate(HOME));
+    refreshBtn.addEventListener('click', () => {
+      if (cursor >= 0) setSrc(historyStack[cursor]);
+    });
+    backBtn.addEventListener('click', () => {
+      if (cursor > 0) {
+        cursor--; setSrc(historyStack[cursor]); address.value = historyStack[cursor]; updateNavButtons();
+      }
+    });
+    forwardBtn.addEventListener('click', () => {
+      if (cursor < historyStack.length - 1) {
+        cursor++; setSrc(historyStack[cursor]); address.value = historyStack[cursor]; updateNavButtons();
+      }
+    });
+    stopBtn.addEventListener('click', () => {
+      // There's no standard way to stop iframe load; reset to about:blank quickly
+      view.src = 'about:blank';
+    });
+
+    // Enter to go
+    address.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') navigate(address.value || HOME);
+    });
+
+    // Keyboard navigation (common shortcuts)
+    window.addEventListener('keydown', (e) => {
+      if (e.altKey && e.key === 'ArrowLeft') { backBtn.click(); }
+      if (e.altKey && e.key === 'ArrowRight') { forwardBtn.click(); }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r') { e.preventDefault(); refreshBtn.click(); }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') { e.preventDefault(); address.select(); }
+    });
+
+    // Persist last session
+    const saved = localStorage.getItem('mini-browser-last');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (Array.isArray(data.stack) && typeof data.cursor === 'number') {
+        historyStack.push(...data.stack);
+        cursor = Math.min(Math.max(0, data.cursor), historyStack.length - 1);
+        if (historyStack.length) {
+          address.value = historyStack[cursor];
+          setSrc(historyStack[cursor]);
+          updateNavButtons();
+        }
+      }
+    } else {
+      navigate(HOME);
+    }
+
+    // Save on changes
+    const persist = () => {
+      localStorage.setItem('mini-browser-last', JSON.stringify({ stack: historyStack, cursor }));
+    };
+    ['click','keydown','popstate'].forEach(ev => window.addEventListener(ev, persist));
+  </script>
+</body>
+</html>
