@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mini Landing</title>
+<style>
+    :root { --bg:#0f172a; --fg:#e2e8f0; --accent:#22c55e; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui, Arial; background:linear-gradient(135deg,#0f172a,#111827); color:var(--fg); }
+    .nav { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid #33415555; position:sticky; top:0; backdrop-filter:saturate(1.2) blur(6px); background:#0f172a99; }
+    .nav a { color:var(--fg); text-decoration:none; margin:0 10px; opacity:.9 }
+    .nav a:hover { opacity:1 }
+    .btn { background:var(--accent); color:#052e16; padding:10px 14px; border-radius:10px; font-weight:600; border:none; cursor:pointer }
+    .hero { max-width:1000px; margin:60px auto; padding:0 18px; display:grid; gap:22px; grid-template-columns:1.2fr .8fr; align-items:center; }
+    .hero h1 { margin:0 0 10px; font-size:clamp(28px,5vw,44px); line-height:1.1 }
+    .hero p { margin:0 0 18px; color:#cbd5e1 }
+    .card { background:#0b1220; border:1px solid #33415577; padding:18px; border-radius:16px; box-shadow:0 10px 30px #00000040 }
+    .tag { display:inline-block; padding:6px 10px; border-radius:999px; background:#22c55e1a; color:#86efac; font-size:12px; margin-bottom:10px }
+    img { width:100%; height:auto; border-radius:14px; display:block }
+    @media (max-width:840px) { .hero { grid-template-columns:1fr } }
+</style>
+</head>
+<body>
+<nav class="nav">
+    <strong>MySite</strong>
+    <div>
+    <a href="#">Home</a><a href="#">Features</a><a href="#">Contact</a>
+    <button class="btn">Get Started</button>
+    </div>
+</nav>
+
+<section class="hero">
+    <div>
+    <span class="tag">NEW</span>
+    <h1>Build a modern page in minutes.</h1>
+<p>Clean, responsive starter with a sticky navbar, gradient background, and a simple card—no frameworks.</p>
+    <button class="btn">Try Demo</button>
+    </div>
+    <div class="card">
+    <img src="https://picsum.photos/600/380" alt="Preview" />
+    <h3 style="margin:12px 0 6px;">Preview Card</h3>
+    <p style="margin:0;color:#94a3b8">Drop your image or product shot here. The card has soft shadows and rounded corners.</p>
+    </div>
+</section>
+</body>
+</html>
