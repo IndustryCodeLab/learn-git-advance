@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Salon Booking System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #ff4d6d;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      width: 90%;
+      max-width: 600px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #ff4d6d;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e63950;
+    }
+    .confirmation {
+      padding: 15px;
+      background: #d4f8d4;
+      border: 1px solid #28a745;
+      color: #155724;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>💇 Salon Haircut Booking</h1>
+    <p>Book your appointment online easily!</p>
+  </header>
+
+  <div class="container">
+    <h2>Book Appointment</h2>
+    <form id="bookingForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" required>
+
+      <label for="service">Select Service</label>
+      <select id="service" required>
+        <option value="">--Choose a Service--</option>
+        <option>Haircut</option>
+        <option>Beard Trim</option>
+        <option>Hair Spa</option>
+        <option>Hair Coloring</option>
+      </select>
+
+      <label for="stylist">Choose Stylist</label>
+      <select id="stylist" required>
+        <option value="">--Select Stylist--</option>
+        <option>Rahul</option>
+        <option>Priya</option>
+        <option>Amit</option>
+      </select>
+
+      <label for="date">Date</label>
+      <input type="date" id="date" required>
+
+      <label for="time">Time</label>
+      <input type="time" id="time" required>
+
+      <button type="submit">Book Now</button>
+    </form>
+
+    <div class="confirmation" id="confirmationBox"></div>
+  </div>
+
+  <script>
+    document.getElementById("bookingForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      let name = document.getElementById("name").value;
+      let service = document.getElementById("service").value;
+      let stylist = document.getElementById("stylist").value;
+      let date = document.getElementById("date").value;
+      let time = document.getElementById("time").value;
+
+      let confirmationBox = document.getElementById("confirmationBox");
+      confirmationBox.style.display = "block";
+      confirmationBox.innerHTML = `
+        ✅ Booking Confirmed! <br><br>
+        <b>Name:</b> ${name} <br>
+        <b>Service:</b> ${service} <br>
+        <b>Stylist:</b> ${stylist} <br>
+        <b>Date:</b> ${date} <br>
+        <b>Time:</b> ${time}
+      `;
+
+      document.getElementById("bookingForm").reset();
+    });
+  </script>
+
+</body>
+</html>
