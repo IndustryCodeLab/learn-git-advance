@@ -1,0 +1,6 @@
+
+Hi, my name is Piyush Mishra. I have recently completed my MCA (2022–2024) with a specialization in Core Java, React.js, Redux Toolkit, and frontend technologies. I have hands-on experience working as a React.js Developer at Master Projects, where I contributed to multiple live projects by building responsive and user-friendly web interfaces.
+
+I have also completed internships at Graviton Web Technologies and CR Technologies, where I worked on frontend development using HTML, CSS, JavaScript, React.js, and strengthened my expertise in Core Java and OOP concepts.
+
+I am a proactive learner and team player, passionate about creating scalable, efficient, and visually appealing web applications. My technical skills include React.js, JavaScript, Tailwind CSS, Firebase, SQL/MySQL, and Core Java.
