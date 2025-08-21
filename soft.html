@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sumit • Freelance Software Developer</title>
+    <meta name="description" content="Freelance full‑stack developer for modern web & mobile apps. High‑quality, on‑time delivery.">
+
+    <!-- Instant theme set to avoid flash -->
+    <script>
+      (function () {
+        try {
+          const saved = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+        } catch (_) {}
+      })();
+    </script>
+
+    <style>
+      :root {
+        --bg: #ffffff; --text: #0f172a; --muted: #475569; --card: #f8fafc; --border: #e2e8f0; --accent: #2563eb;
+      }
+      html[data-theme="dark"] {
+        --bg: #0b1220; --text: #e5e7eb; --muted: #94a3b8; --card: #0f172a; --border: #1f2937; --accent: #60a5fa;
+      }
+      * { box-sizing: border-box }
+      body { margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto; background:var(--bg); color:var(--text); line-height:1.6; }
+      a { color: var(--accent); text-decoration: none }
+      img { max-width: 100%; height: auto; border-radius: 12px }
+      .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem }
+      .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.8rem 1rem; border-radius: 999px; border:1px solid var(--border); background: var(--accent); color:#fff; font-weight:600 }
+      .btn.ghost { background: transparent; color: var(--text); }
+      .btn:hover { filter: brightness(.95) }
+      .tag { display:inline-block; padding:.25rem .6rem; border:1px solid var(--border); border-radius:999px; font-size:.85rem; color:var(--muted) }
+      header { position:sticky; top:0; backdrop-filter:saturate(140%) blur(6px); background: color-mix(in srgb, var(--bg) 75%, transparent); border-bottom:1px solid var(--border); z-index:50 }
+      nav { display:flex; align-items:center; justify-content:space-between; height:64px }
+      .nav-links { display:flex; gap:1rem; align-items:center }
+      .mobile-toggle { display:none; border:1px solid var(--border); background:transparent; border-radius:10px; padding:.45rem .6rem }
+      @media (max-width: 860px){ .nav-links { display:none } .mobile-toggle{ display:inline-flex } }
+
+      /* Sections */
+      section { padding: 64px 0 }
+      .hero { display:grid; grid-template-columns: 1.2fr .8fr; gap:2rem; align-items:center }
+      .hero h1{ font-size: clamp(1.8rem, 3.5vw + 1rem, 3rem); line-height:1.2; margin:.2rem 0 .75rem }
+      .hero p { color: var(--muted) }
+      .hero .cta { display:flex; gap: .8rem; flex-wrap: wrap; margin-top: 1rem }
+      @media (max-width: 860px){ .hero { grid-template-columns: 1fr } }
+
+      .grid { display:grid; gap:1rem }
+      .grid-3 { grid-template-columns: repeat(3, 1fr) }
+      .grid-2 { grid-template-columns: repeat(2, 1fr) }
+      @media (max-width: 860px){ .grid-3, .grid-2 { grid-template-columns: 1fr } }
+
+      .card { background: var(--card); border:1px solid var(--border); border-radius:16px; padding:1rem }
+      .muted { color: var(--muted) }
+
+      .section-title { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom: 1rem }
+      .section-title h2{ margin:0; font-size: clamp(1.3rem, 1.6vw + 1rem, 1.8rem) }
+
+      .projects .item { display:flex; flex-direction:column; gap:.6rem }
+      .projects .meta { display:flex; gap:.5rem; flex-wrap:wrap }
+
+      .stats { display:grid; grid-template-columns: repeat(4,1fr); gap:1rem }
+      @media (max-width: 860px){ .stats { grid-template-columns: repeat(2,1fr) } }
+      .stat { text-align:center; padding:1rem; border:1px dashed var(--border); border-radius:16px }
+      .stat .num { font-weight:800; font-size:1.6rem }
+
+      .process .step { display:flex; gap:1rem; align-items:flex-start }
+      .process .num { width:36px; height:36px; border-radius:999px; background:var(--accent); color:#fff; display:grid; place-items:center; font-weight:700 }
+
+      .faq details { border:1px solid var(--border); border-radius:12px; padding: .8rem 1rem }
+      .faq details + details { margin-top:.6rem }
+      .faq summary { cursor:pointer; font-weight:600 }
+
+      .footer { border-top:1px solid var(--border); padding: 24px 0; color: var(--muted) }
+
+      /* Theme button */
+      .theme-btn { border:1px solid var(--border); background:transparent; border-radius:999px; padding:.5rem .8rem }
+      .icon { width:18px; height:18px; vertical-align:-3px }
+      html[data-theme="light"] .icon-moon { display:inline }
+      html[data-theme="light"] .icon-sun  { display:none }
+      html[data-theme="dark"] .icon-moon  { display:none }
+      html[data-theme="dark"] .icon-sun   { display:inline }
+
+      /* Simple animations */
+      .fade { animation: fade .5s ease both }
+      @keyframes fade { from { opacity: 0; transform: translateY(6px)} to { opacity:1; transform:none } }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a href="#" class="logo" aria-label="Go home" style="font-weight:800">Sumit.Software developer</a>
+          <div class="nav-links">
+            <a href="#services">Services</a>
+            <a href="#projects">Projects</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#about">About</a>
+            <a href="#contact" class="btn">Hire Me</a>
+          </div>
+          <div style="display:flex; gap:.5rem; align-items:center">
+            <button id="theme" class="theme-btn" aria-label="Toggle theme" title="Toggle theme">
+              <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+              <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            </button>
+            <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-controls="mobileMenu">☰</button>
+          </div>
+        </nav>
+      </div>
+      <div id="mobileMenu" class="container" style="display:none; padding-bottom: .75rem">
+        <div class="card" style="display:grid; gap:.5rem">
+          <a href="#services">Services</a>
+          <a href="#projects">Projects</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#about">About</a>
+          <a href="#contact" class="btn">Hire Me</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Hero -->
+      <section class="hero fade">
+        <div>
+          <span class="tag">Available for new projects</span>
+          <h1>Freelance Software Developer for Startups & SMBs</h1>
+          <p>I build fast, accessible web apps and APIs with modern stacks. From idea to launch, I help you ship reliable software—quickly.</p>
+          <div class="cta">
+            <a class="btn" href="#contact">Get a Free Quote</a>
+            <a class="btn ghost" href="#projects">See My Work</a>
+          </div>
+          <div class="stats" style="margin-top:1.25rem">
+            <div class="stat"><div class="num">35+</div><div class="muted">Projects delivered</div></div>
+            <div class="stat"><div class="num">10k+</div><div class="muted">Users served</div></div>
+            <div class="stat"><div class="num">8 yrs</div><div class="muted">Experience</div></div>
+            <div class="stat"><div class="num">5★</div><div class="muted">Client rating</div></div>
+          </div>
+        </div>
+        <div>
+          <img alt="Laptop with code and charts" src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop"/>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section id="services">
+        <div class="section-title">
+          <h2>Services</h2>
+          <a class="btn ghost" href="#contact">Let’s talk</a>
+        </div>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>Full‑Stack Web Apps</h3>
+            <p class="muted">React, Node.js/Express, PostgreSQL. From MVP to scale.</p>
+          </div>
+          <div class="card">
+            <h3>REST & GraphQL APIs</h3>
+            <p class="muted">Secure, well‑documented APIs with testing & CI.</p>
+          </div>
+          <div class="card">
+            <h3>Landing Pages</h3>
+            <p class="muted">High‑converting product pages optimized for SEO.</p>
+          </div>
+          <div class="card">
+            <h3>UI Engineering</h3>
+            <p class="muted">Pixel‑perfect, accessible components and design systems.</p>
+          </div>
+          <div class="card">
+            <h3>Performance Audits</h3>
+            <p class="muted">Core Web Vitals, Lighthouse, bundle optimization.</p>
+          </div>
+          <div class="card">
+            <h3>Maintenance & Support</h3>
+            <p class="muted">Retainers for bug fixes, upgrades, and new features.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="projects">
+        <div class="section-title">
+          <h2>Selected Projects</h2>
+          <span class="muted">More on request</span>
+        </div>
+        <div class="grid grid-3">
+          <article class="item card">
+            <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop" alt="SaaS dashboard UI"/>
+            <h3>Analytics SaaS</h3>
+            <p class="muted">React, Node, Postgres • 3x faster dashboard, 40% lower costs.</p>
+            <div class="meta"><span class="tag">React</span><span class="tag">Node</span><span class="tag">Cloud</span></div>
+          </article>
+          <article class="item card">
+            <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=1200&auto=format&fit=crop" alt="eCommerce product listing"/>
+            <h3>eCommerce Platform</h3>
+            <p class="muted">Next.js, Stripe • +22% conversion after redesign.</p>
+            <div class="meta"><span class="tag">Next.js</span><span class="tag">Stripe</span></div>
+          </article>
+          <article class="item card">
+            <img src="https://images.unsplash.com/photo-1532619187608-e5375cab36aa?q=80&w=1200&auto=format&fit=crop" alt="Mobile banking app"/>
+            <h3>Fintech Mobile App</h3>
+            <p class="muted">React Native, GraphQL • 4.9★ on app stores.</p>
+            <div class="meta"><span class="tag">React Native</span><span class="tag">GraphQL</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Pricing -->
+      <section id="pricing">
+        <div class="section-title">
+          <h2>Simple Pricing</h2>
+          <span class="muted">Fixed‑scope or hourly</span>
+        </div>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>Starter</h3>
+            <p class="muted">Landing page or small feature</p>
+            <h4 style="margin:.5rem 0">₹25k – ₹60k</h4>
+            <ul class="muted">
+              <li>1–2 pages / features</li>
+              <li>1 round of revisions</li>
+              <li>1 week delivery</li>
+            </ul>
+            <a class="btn" href="#contact">Choose Starter</a>
+          </div>
+          <div class="card" style="border:2px solid var(--accent)">
+            <h3>Growth</h3>
+            <p class="muted">MVP or core product work</p>
+            <h4 style="margin:.5rem 0">₹80k – ₹2.5L</h4>
+            <ul class="muted">
+              <li>End‑to‑end delivery</li>
+              <li>Design + Development</li>
+              <li>2–6 weeks</li>
+            </ul>
+            <a class="btn" href="#contact">Choose Growth</a>
+          </div>
+          <div class="card">
+            <h3>Retainer</h3>
+            <p class="muted">Ongoing support</p>
+            <h4 style="margin:.5rem 0">₹50k / month</h4>
+            <ul class="muted">
+              <li>Up to 20 hrs / mo</li>
+              <li>Priority support</li>
+              <li>Cancel anytime</li>
+            </ul>
+            <a class="btn" href="#contact">Start Retainer</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Process -->
+      <section class="process" id="about">
+        <div class="section-title">
+          <h2>How I Work</h2>
+          <span class="muted">Clear, collaborative, predictable</span>
+        </div>
+        <div class="grid grid-2">
+          <div class="card step">
+            <div class="num">1</div>
+            <div>
+              <h3>Discovery</h3>
+              <p class="muted">We define goals, scope, timeline, and success metrics. You get a clear proposal.</p>
+            </div>
+          </div>
+          <div class="card step">
+            <div class="num">2</div>
+            <div>
+              <h3>Design</h3>
+              <p class="muted">Wireframes and UI mockups for feedback. Accessibility and responsive by default.</p>
+            </div>
+          </div>
+          <div class="card step">
+            <div class="num">3</div>
+            <div>
+              <h3>Build</h3>
+              <p class="muted">Iterative sprints, version control, CI, automated tests where it matters.</p>
+            </div>
+          </div>
+          <div class="card step">
+            <div class="num">4</div>
+            <div>
+              <h3>Launch & Support</h3>
+              <p class="muted">Deploy, monitor, and handover docs. Optional retainer for improvements.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq">
+        <div class="section-title">
+          <h2>FAQ</h2>
+          <span class="muted">Common questions</span>
+        </div>
+        <details>
+          <summary>Which tech stacks do you use?</summary>
+          <p class="muted">JavaScript/TypeScript, React, Next.js, Node.js, Express, PostgreSQL, Prisma, GraphQL, Tailwind, and cloud (Vercel/AWS).</p>
+        </details>
+        <details>
+          <summary>Do you sign NDAs?</summary>
+          <p class="muted">Yes. I’m happy to sign your NDA before detailed discussions.</p>
+        </details>
+        <details>
+          <summary>How do payments work?</summary>
+          <p class="muted">For fixed‑scope: 40% upfront, 40% mid‑project, 20% on delivery. For retainers: monthly in advance.</p>
+        </details>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <div class="section-title">
+          <h2>Contact</h2>
+          <span class="muted">Tell me about your project</span>
+        </div>
+        <form class="card" id="contactForm" style="display:grid; gap:.8rem" method="POST" action="https://formspree.io/f/your-id">
+          <div class="grid grid-2">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" required placeholder="Your name" style="width:100%">
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" type="email" name="email" required placeholder="Enter your Email" style="width:100%">
+            </div>
+          </div>
+          <div>
+            <label for="budget">Budget (₹)</label>
+            <input id="budget" name="budget" placeholder="e.g. 100000" style="width:100%">
+          </div>
+          <div>
+            <label for="message">Project details</label>
+            <textarea id="message" name="message" rows="5" required placeholder="What do you want to build? Key features, deadline, links…" style="width:100%"></textarea>
+          </div>
+          <div style="display:flex; gap:.6rem; align-items:center">
+            <button class="btn" type="submit">Send Message</button>
+            <span class="muted" id="formStatus" role="status"></span>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap">
+        <div>© <span id="year"></span> Sid • Freelance Developer</div>
+        <div style="display:flex; gap:.75rem">
+          <a href="#" aria-label="GitHub">GitHub</a>
+          <a href="#" aria-label="LinkedIn">LinkedIn</a>
+          <a href="#" aria-label="X/Twitter">Twitter</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Theme toggle
+      document.getElementById('theme').addEventListener('click', () => {
+        const root = document.documentElement;
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next) } catch(_){ }
+      });
+
+      // Mobile menu toggle
+      const mobileToggle = document.getElementById('mobileToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileToggle.addEventListener('click', () => {
+        const open = mobileMenu.style.display === 'block';
+        mobileMenu.style.display = open ? 'none' : 'block';
+        mobileToggle.setAttribute('aria-expanded', String(!open));
+      });
+
+      // Contact form UX (no real backend unless you set action to Formspree or your API)
+      const form = document.getElementById('contactForm');
+      const status = document.getElementById('formStatus');
+      form.addEventListener('submit', async (e) => {
+        if (!form.action || form.action.includes('your-id')) {
+          e.preventDefault();
+          status.textContent = 'Set your form endpoint in the form action first.';
+          status.style.color = 'tomato';
+          return;
+        }
+        status.textContent = 'Sending…';
+      });
+
+      // Year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Basic inputs styling via JS (since we kept CSS short)
+      document.querySelectorAll('input, textarea').forEach(el => {
+        el.style.border = `1px solid var(--border)`;
+        el.style.borderRadius = '10px';
+        el.style.padding = '.65rem .8rem';
+        el.style.background = 'var(--bg)';
+        el.style.color = 'var(--text)';
+      });
+      document.querySelectorAll('label').forEach(l => { l.style.fontWeight = '600'; })
+    </script>
+  </body>
+</html>
