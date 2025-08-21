@@ -1,3 +1,11 @@
 My name is Dharmendra Chilhate from Bhopal
 Currently I am doing my Btech 
 I have also Enrolled in Full Stack Python Devlopment Course in Cybrom Technology pvt. Limited
+
+
+git init
+git remote add origin url
+git add .
+git commit -m "commit"
+git push -u origin main
+
