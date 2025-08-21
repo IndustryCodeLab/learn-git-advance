@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Portal - React</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4a6da7;
+            --secondary: #7b9acc;
+            --accent: #f47a60;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #5cb85c;
+            --warning: #f0ad4e;
+            --danger: #d9534f;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            margin-left: 10px;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(74, 109, 167, 0.8), rgba(74, 109, 167, 0.9));
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Login Form */
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .user-type {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-type-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: #eee;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .user-type-btn:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        .user-type-btn:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        .user-type-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Dashboard */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        /* News and Notices */
+        .news-list, .notices-list {
+            margin-top: 1rem;
+        }
+
+        .news-item, .notice-item {
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            background: var(--light);
+            margin-bottom: 1rem;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .news-item h4, .notice-item h4 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .news-date, .notice-date {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Admin Panel */
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .footer-links li {
+            margin: 0 15px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+
+            .dashboard-cards, .admin-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .error {
+            color: var(--danger);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            color: var(--success);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Backend simulation (would be replaced with real API calls)
+        const backend = {
+            // Simulate user data storage
+            users: JSON.parse(localStorage.getItem('school_users')) || [
+                { id: 1, username: 'student', password: 'student123', type: 'student', name: 'John Student' },
+                { id: 2, username: 'teacher', password: 'teacher123', type: 'teacher', name: 'Jane Teacher' },
+                { id: 3, username: 'admin', password: 'admin123', type: 'admin', name: 'Admin User' }
+            ],
+
+            // Simulate news storage
+            news: JSON.parse(localStorage.getItem('school_news')) || [
+                { id: 1, title: 'Annual Science Fair', content: 'The annual science fair will be held on December 15th. All students are encouraged to participate.', date: '2023-11-10' },
+                { id: 2, title: 'New Library Hours', content: 'The school library will now be open until 6 PM on weekdays.', date: '2023-11-05' }
+            ],
+
+            // Simulate notices storage
+            notices: JSON.parse(localStorage.getItem('school_notices')) || [
+                { id: 1, title: 'Holiday Notice', content: 'School will remain closed on November 23rd for Thanksgiving holiday.', date: '2023-11-08' },
+                { id: 2, title: 'Exam Schedule', content: 'Final exam schedule has been posted. Please check the notices section for details.', date: '2023-11-01' }
+            ],
+
+            // Simulate API calls with timeouts
+            login: function(username, password) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        const user = this.users.find(u => u.username === username && u.password === password);
+                        if (user) {
+                            resolve({ success: true, user });
+                        } else {
+                            reject({ success: false, message: 'Invalid username or password' });
+                        }
+                    }, 500);
+                });
+            },
+
+            getNews: function() {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve([...this.news].reverse());
+                    }, 300);
+                });
+            },
+
+            getNotices: function() {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve([...this.notices].reverse());
+                    }, 300);
+                });
+            },
+
+            addNews: function(newsItem) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const newItem = {
+                            id: Math.max(...this.news.map(n => n.id)) + 1,
+                            ...newsItem,
+                            date: new Date().toISOString().split('T')[0]
+                        };
+                        this.news.push(newItem);
+                        localStorage.setItem('school_news', JSON.stringify(this.news));
+                        resolve(newItem);
+                    }, 500);
+                });
+            },
+
+            addNotice: function(noticeItem) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const newItem = {
+                            id: Math.max(...this.notices.map(n => n.id)) + 1,
+                            ...noticeItem,
+                            date: new Date().toISOString().split('T')[0]
+                        };
+                        this.notices.push(newItem);
+                        localStorage.setItem('school_notices', JSON.stringify(this.notices));
+                        resolve(newItem);
+                    }, 500);
+                });
+            },
+
+            deleteNews: function(id) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        this.news = this.news.filter(item => item.id !== id);
+                        localStorage.setItem('school_news', JSON.stringify(this.news));
+                        resolve({ success: true });
+                    }, 500);
+                });
+            },
+
+            deleteNotice: function(id) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        this.notices = this.notices.filter(item => item.id !== id);
+                        localStorage.setItem('school_notices', JSON.stringify(this.notices));
+                        resolve({ success: true });
+                    }, 500);
+                });
+            }
+        };
+
+        // React Components
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [currentUser, setCurrentUser] = useState(null);
+            const [currentPage, setCurrentPage] = useState('home');
+            const [news, setNews] = useState([]);
+            const [notices, setNotices] = useState([]);
+
+            useEffect(() => {
+                // Load initial data
+                loadNews();
+                loadNotices();
+
+                // Check if user is logged in from localStorage
+                const savedUser = localStorage.getItem('currentUser');
+                if (savedUser) {
+                    setCurrentUser(JSON.parse(savedUser));
+                }
+            }, []);
+
+            const loadNews = async () => {
+                try {
+                    const newsData = await backend.getNews();
+                    setNews(newsData);
+                } catch (error) {
+                    console.error('Error loading news:', error);
+                }
+            };
+
+            const loadNotices = async () => {
+                try {
+                    const noticesData = await backend.getNotices();
+                    setNotices(noticesData);
+                } catch (error) {
+                    console.error('Error loading notices:', error);
+                }
+            };
+
+            const handleLogin = (user) => {
+                setCurrentUser(user);
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                setCurrentPage('dashboard');
+            };
+
+            const handleLogout = () => {
+                setCurrentUser(null);
+                localStorage.removeItem('currentUser');
+                setCurrentPage('home');
+            };
+
+            const addNews = async (newsItem) => {
+                try {
+                    await backend.addNews(newsItem);
+                    await loadNews();
+                    return { success: true };
+                } catch (error) {
+                    return { success: false, error };
+                }
+            };
+
+            const addNotice = async (noticeItem) => {
+                try {
+                    await backend.addNotice(noticeItem);
+                    await loadNotices();
+                    return { success: true };
+                } catch (error) {
+                    return { success: false, error };
+                }
+            };
+
+            const deleteNews = async (id) => {
+                try {
+                    await backend.deleteNews(id);
+                    await loadNews();
+                    return { success: true };
+                } catch (error) {
+                    return { success: false, error };
+                }
+            };
+
+            const deleteNotice = async (id) => {
+                try {
+                    await backend.deleteNotice(id);
+                    await loadNotices();
+                    return { success: true };
+                } catch (error) {
+                    return { success: false, error };
+                }
+            };
+
+            return (
+                <div>
+                    <Header
+                        currentUser={currentUser}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        onLogout={handleLogout}
+                    />
+                    <div className="main-content">
+                        <div className="container">
+                            {currentPage === 'home' && <HomePage news={news} notices={notices} />}
+                            {currentPage === 'login' && <LoginPage onLogin={handleLogin} setCurrentPage={setCurrentPage} />}
+                            {currentPage === 'dashboard' && <DashboardPage currentUser={currentUser} />}
+                            {currentPage === 'admin' && <AdminPage
+                                news={news}
+                                notices={notices}
+                                onAddNews={addNews}
+                                onAddNotice={addNotice}
+                                onDeleteNews={deleteNews}
+                                onDeleteNotice={deleteNotice}
+                            />}
+                            {currentPage === 'news' && <NewsPage news={news} />}
+                            {currentPage === 'notices' && <NoticesPage notices={notices} />}
+                            {currentPage === 'manage-news' && <ManageNewsPage
+                                news={news}
+                                onAddNews={addNews}
+                                onDeleteNews={deleteNews}
+                            />}
+                            {currentPage === 'manage-notices' && <ManageNoticesPage
+                                notices={notices}
+                                onAddNotice={addNotice}
+                                onDeleteNotice={deleteNotice}
+                            />}
+                        </div>
+                    </div>
+                    <Footer />
+                </div>
+            );
+        }
+
+        function Header({ currentUser, currentPage, setCurrentPage, onLogout }) {
+            return (
+                <header>
+                    <div className="container">
+                        <div className="header-content">
+                            <div className="logo">
+                                <span className="logo-icon">📚</span>
+                                <h1>School Portal</h1>
+                            </div>
+                            <nav>
+                                <ul>
+                                    <li><a onClick={() => setCurrentPage('home')}>Home</a></li>
+                                    <li><a onClick={() => setCurrentPage('news')}>News</a></li>
+                                    <li><a onClick={() => setCurrentPage('notices')}>Notices</a></li>
+                                    {!currentUser && (
+                                        <li><a onClick={() => setCurrentPage('login')}>Login</a></li>
+                                    )}
+                                    {currentUser && (
+                                        <>
+                                            <li><a onClick={() => setCurrentPage('dashboard')}>Dashboard</a></li>
+                                            {currentUser.type === 'admin' && (
+                                                <li><a onClick={() => setCurrentPage('admin')}>Admin Panel</a></li>
+                                            )}
+                                            <li><a onClick={onLogout}>Logout</a></li>
+                                        </>
+                                    )}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        function HomePage({ news, notices }) {
+            return (
+                <div>
+                    <div className="hero">
+                        <h2>Welcome to School Portal</h2>
+                        <p>Your comprehensive education management system for students, teachers, and administrators</p>
+                    </div>
+
+                    <div className="dashboard-cards">
+                        <div className="card">
+                            <h3>Latest News</h3>
+                            <div className="news-list">
+                                {news.slice(0, 2).map(item => (
+                                    <div key={item.id} className="news-item">
+                                        <h4>{item.title}</h4>
+                                        <p>{item.content}</p>
+                                        <div className="news-date">Posted on: {item.date}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="card">
+                            <h3>Important Notices</h3>
+                            <div className="notices-list">
+                                {notices.slice(0, 2).map(item => (
+                                    <div key={item.id} className="notice-item">
+                                        <h4>{item.title}</h4>
+                                        <p>{item.content}</p>
+                                        <div className="notice-date">Posted on: {item.date}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="card">
+                            <h3>Upcoming Events</h3>
+                            <ul style={{listStylePosition: 'inside'}}>
+                                <li>Parent-Teacher Meeting - Nov 20, 2023</li>
+                                <li>Basketball Tournament - Nov 25, 2023</li>
+                                <li>Science Fair - Dec 15, 2023</li>
+                                <li>Winter Break - Dec 22, 2023 - Jan 5, 2024</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function LoginPage({ onLogin, setCurrentPage }) {
+            const [username, setUsername] = useState('');
+            const [password, setPassword] = useState('');
+            const [userType, setUserType] = useState('student');
+            const [error, setError] = useState('');
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setError('');
+
+                try {
+                    const result = await backend.login(username, password);
+                    if (result.success) {
+                        onLogin(result.user);
+                    }
+                } catch (error) {
+                    setError(error.message);
+                }
+            };
+
+            return (
+                <div className="form-container">
+                    <h2>Login to Your Account</h2>
+
+                    <div className="user-type">
+                        <div
+                            className={`user-type-btn ${userType === 'student' ? 'active' : ''}`}
+                            onClick={() => setUserType('student')}
+                        >
+                            Student
+                        </div>
+                        <div
+                            className={`user-type-btn ${userType === 'teacher' ? 'active' : ''}`}
+                            onClick={() => setUserType('teacher')}
+                        >
+                            Teacher
+                        </div>
+                        <div
+                            className={`user-type-btn ${userType === 'admin' ? 'active' : ''}`}
+                            onClick={() => setUserType('admin')}
+                        >
+                            Admin
+                        </div>
+                    </div>
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="username">Username</label>
+                            <input
+                                type="text"
+                                id="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        {error && <div className="error">{error}</div>}
+
+                        <button type="submit" className="btn btn-block">Login</button>
+                    </form>
+
+                    <div style={{marginTop: '1rem', textAlign: 'center'}}>
+                        <p>Demo Credentials:</p>
+                        <p>Student: student / student123</p>
+                        <p>Teacher: teacher / teacher123</p>
+                        <p>Admin: admin / admin123</p>
+                    </div>
+                </div>
+            );
+        }
+
+        function DashboardPage({ currentUser }) {
+            return (
+                <div>
+                    <h2>User Dashboard</h2>
+                    <p>Welcome back, {currentUser?.name} ({currentUser?.type})!</p>
+
+                    <div className="dashboard-cards">
+                        <div className="card">
+                            <h3>My Classes</h3>
+                            <ul style={{listStylePosition: 'inside'}}>
+                                <li>Mathematics - Mr. Johnson</li>
+                                <li>Science - Ms. Williams</li>
+                                <li>English - Mr. Davis</li>
+                                <li>History - Mrs. Thompson</li>
+                            </ul>
+                        </div>
+
+                        <div className="card">
+                            <h3>Assignments</h3>
+                            <ul style={{listStylePosition: 'inside'}}>
+                                <li>Math Problem Set - Due Nov 15</li>
+                                <li>Science Report - Due Nov 18</li>
+                                <li>English Essay - Due Nov 20</li>
+                            </ul>
+                        </div>
+
+                        <div className="card">
+                            <h3>Grades</h3>
+                            <ul style={{listStylePosition: 'inside'}}>
+                                <li>Mathematics: A-</li>
+                                <li>Science: B+</li>
+                                <li>English: A</li>
+                                <li>History: B+</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function AdminPage({ news, notices, onAddNews, onAddNotice, onDeleteNews, onDeleteNotice }) {
+            return (
+                <div>
+                    <h2>Admin Panel</h2>
+                    <p>Manage school content and users</p>
+
+                    <div className="admin-actions">
+                        <div className="action-card" onClick={() => window.location = '#manage-news'}>
+                            <div>📰</div>
+                            <h3>Manage News</h3>
+                        </div>
+
+                        <div className="action-card" onClick={() => window.location = '#manage-notices'}>
+                            <div>📢</div>
+                            <h3>Manage Notices</h3>
+                        </div>
+
+                        <div className="action-card">
+                            <div>👥</div>
+                            <h3>User Management</h3>
+                        </div>
+
+                        <div className="action-card">
+                            <div>📊</div>
+                            <h3>Reports</h3>
+                        </div>
+                    </div>
+
+                    <div style={{marginTop: '2rem'}}>
+                        <div className="card">
+                            <h3>Recent News</h3>
+                            <div className="news-list">
+                                {news.slice(0, 3).map(item => (
+                                    <div key={item.id} className="news-item">
+                                        <h4>{item.title}</h4>
+                                        <p>{item.content}</p>
+                                        <div className="news-date">Posted on: {item.date}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="card" style={{marginTop: '1.5rem'}}>
+                            <h3>Recent Notices</h3>
+                            <div className="notices-list">
+                                {notices.slice(0, 3).map(item => (
+                                    <div key={item.id} className="notice-item">
+                                        <h4>{item.title}</h4>
+                                        <p>{item.content}</p>
+                                        <div className="notice-date">Posted on: {item.date}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function ManageNewsPage({ news, onAddNews, onDeleteNews }) {
+            const [title, setTitle] = useState('');
+            const [content, setContent] = useState('');
+            const [message, setMessage] = useState('');
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setMessage('');
+
+                const result = await onAddNews({ title, content });
+                if (result.success) {
+                    setMessage('News published successfully!');
+                    setTitle('');
+                    setContent('');
+                } else {
+                    setMessage('Error publishing news. Please try again.');
+                }
+            };
+
+            const handleDelete = async (id) => {
+                if (window.confirm('Are you sure you want to delete this news item?')) {
+                    await onDeleteNews(id);
+                }
+            };
+
+            return (
+                <div>
+                    <h2>Manage News</h2>
+
+                    <div className="form-container">
+                        <h3>Add New News Item</h3>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="news-title">Title</label>
+                                <input
+                                    type="text"
+                                    id="news-title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="news-content">Content</label>
+                                <textarea
+                                    id="news-content"
+                                    rows="5"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                    required
+                                ></textarea>
+                            </div>
+
+                            {message && <div className={message.includes('Error') ? 'error' : 'success'}>{message}</div>}
+
+                            <button type="submit" className="btn btn-block">Publish News</button>
+                        </form>
+                    </div>
+
+                    <div className="card" style={{marginTop: '2rem'}}>
+                        <h3>Existing News Items</h3>
+                        <div className="news-list">
+                            {news.map(item => (
+                                <div key={item.id} className="news-item">
+                                    <h4>{item.title}</h4>
+                                    <p>{item.content}</p>
+                                    <div className="news-date">Posted on: {item.date}</div>
+                                    <div style={{marginTop: '10px'}}>
+                                        <button className="btn" style={{background: 'var(--warning)'}}>Edit</button>
+                                        <button
+                                            className="btn"
+                                            style={{background: 'var(--danger)', marginLeft: '10px'}}
+                                            onClick={() => handleDelete(item.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function ManageNoticesPage({ notices, onAddNotice, onDeleteNotice }) {
+            const [title, setTitle] = useState('');
+            const [content, setContent] = useState('');
+            const [message, setMessage] = useState('');
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setMessage('');
+
+                const result = await onAddNotice({ title, content });
+                if (result.success) {
+                    setMessage('Notice published successfully!');
+                    setTitle('');
+                    setContent('');
+                } else {
+                    setMessage('Error publishing notice. Please try again.');
+                }
+            };
+
+            const handleDelete = async (id) => {
+                if (window.confirm('Are you sure you want to delete this notice?')) {
+                    await onDeleteNotice(id);
+                }
+            };
+
+            return (
+                <div>
+                    <h2>Manage Notices</h2>
+
+                    <div className="form-container">
+                        <h3>Add New Notice</h3>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="notice-title">Title</label>
+                                <input
+                                    type="text"
+                                    id="notice-title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="notice-content">Content</label>
+                                <textarea
+                                    id="notice-content"
+                                    rows="5"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                    required
+                                ></textarea>
+                            </div>
+
+                            {message && <div className={message.includes('Error') ? 'error' : 'success'}>{message}</div>}
+
+                            <button type="submit" className="btn btn-block">Publish Notice</button>
+                        </form>
+                    </div>
+
+                    <div className="card" style={{marginTop: '2rem'}}>
+                        <h3>Existing Notices</h3>
+                        <div className="notices-list">
+                            {notices.map(item => (
+                                <div key={item.id} className="notice-item">
+                                    <h4>{item.title}</h4>
+                                    <p>{item.content}</p>
+                                    <div className="notice-date">Posted on: {item.date}</div>
+                                    <div style={{marginTop: '10px'}}>
+                                        <button className="btn" style={{background: 'var(--warning)'}}>Edit</button>
+                                        <button
+                                            className="btn"
+                                            style={{background: 'var(--danger)', marginLeft: '10px'}}
+                                            onClick={() => handleDelete(item.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function NewsPage({ news }) {
+            return (
+                <div>
+                    <h2>School News</h2>
+
+                    <div className="news-list">
+                        {news.map(item => (
+                            <div key={item.id} className="news-item">
+                                <h4>{item.title}</h4>
+                                <p>{item.content}</p>
+                                <div className="news-date">Posted on: {item.date}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        function NoticesPage({ notices }) {
+            return (
+                <div>
+                    <h2>School Notices</h2>
+
+                    <div className="notices-list">
+                        {notices.map(item => (
+                            <div key={item.id} className="notice-item">
+                                <h4>{item.title}</h4>
+                                <p>{item.content}</p>
+                                <div className="notice-date">Posted on: {item.date}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        function Footer() {
+            return (
+                <footer>
+                    <div className="container">
+                        <div className="footer-content">
+                            <p>&copy; 2023 School Portal. All rights reserved.</p>
+                            <ul className="footer-links">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Contact</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
