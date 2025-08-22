@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Interactive Calendar</title>
+  <style>
+    :root{--bg:#f6f8fb;--card:#ffffff;--accent:#2b6cb0;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); margin:0; padding:24px; color:#0f172a}
+    .wrap{max-width:900px;margin:0 auto}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(15,23,42,0.06)}
+    .header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .month-year{font-size:20px;font-weight:600;color:var(--accent)}
+    .controls button{background:transparent;border:1px solid rgba(15,23,42,0.06);padding:8px 12px;border-radius:8px;cursor:pointer}
+    .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
+    .weekday{font-size:12px;color:var(--muted);text-align:center;padding:6px 4px}
+    .day{min-height:88px;border-radius:10px;padding:8px;background:linear-gradient(180deg, rgba(11,20,35,0.01), transparent);position:relative;cursor:pointer}
+    .day.out{opacity:.35}
+    .day .date{font-weight:600}
+    .day .events{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px;flex-wrap:wrap}
+    .dot{height:8px;width:8px;border-radius:50%}
+    .today{box-shadow:0 2px 0 rgba(43,108,176,0.12);border:1px solid rgba(43,108,176,0.12)}
+    .toolbar{display:flex;gap:8px;align-items:center}
+    .add-quick{display:flex;gap:8px;margin-left:8px}
+    input[type=text], select{padding:8px;border-radius:8px;border:1px solid rgba(15,23,42,0.06)}
+    /* Modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.45)}
+    .modal .box{background:var(--card);padding:16px;border-radius:10px;min-width:320px}
+    .modal h3{margin:0 0 8px 0}
+    .event-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;border:1px dashed rgba(15,23,42,0.03);margin-bottom:8px}
+    .empty{color:var(--muted);font-size:13px}
+    @media (max-width:640px){.day{min-height:72px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <div>
+          <div class="month-year" id="monthYear"></div>
+          <div style="font-size:13px;color:var(--muted)">Click any date to add/view events</div>
+        </div>
+        <div class="toolbar">
+          <div class="controls">
+            <button id="prev">◀ Prev</button>
+            <button id="next">Next ▶</button>
+          </div>
+          <div class="add-quick">
+            <input id="quickTitle" type="text" placeholder="Quick event title" />
+            <select id="quickDate">
+            </select>
+            <button id="quickAdd">Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid" id="calendar">
+        <!-- weekdays -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="box">
+      <h3 id="modalDateTitle">Events</h3>
+      <div id="eventsList"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input id="eventTitle" type="text" placeholder="Event title" style="flex:1" />
+        <button id="saveEvent">Save</button>
+      </div>
+      <div style="text-align:right;margin-top:8px"><button id="closeModal">Close</button></div>
+    </div>
+  </div>
+
+  <script>
+    const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const calendarEl = document.getElementById('calendar');
+    const monthYearEl = document.getElementById('monthYear');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const modal = document.getElementById('modal');
+    const eventsList = document.getElementById('eventsList');
+    const modalDateTitle = document.getElementById('modalDateTitle');
+    const eventTitleInput = document.getElementById('eventTitle');
+    const saveEventBtn = document.getElementById('saveEvent');
+    const closeModalBtn = document.getElementById('closeModal');
+    const quickDate = document.getElementById('quickDate');
+    const quickTitle = document.getElementById('quickTitle');
+    const quickAdd = document.getElementById('quickAdd');
+
+    let view = new Date(); // current view month
+    let selectedDate = null;
+
+    function loadEvents(){
+      const raw = localStorage.getItem('calendarEvents');
+      return raw ? JSON.parse(raw) : {};
+    }
+    function saveEvents(obj){
+      localStorage.setItem('calendarEvents', JSON.stringify(obj));
+    }
+
+    function render(){
+      calendarEl.innerHTML = '';
+      // weekdays header
+      for(let d of weekdays){
+        const w = document.createElement('div'); w.className='weekday'; w.textContent = d; calendarEl.appendChild(w);
+      }
+
+      const year = view.getFullYear();
+      const month = view.getMonth();
+      monthYearEl.textContent = view.toLocaleString(undefined,{month:'long', year:'numeric'});
+
+      const first = new Date(year, month, 1);
+      const startDay = first.getDay();
+      const daysInMonth = new Date(year, month+1, 0).getDate();
+
+      // previous month's tail
+      const prevDays = startDay; // number of blank cells before 1st
+      const totalCells = prevDays + daysInMonth;
+      // calculate starting date for quickDate select
+      quickDate.innerHTML='';
+
+      // fill calendar
+      const events = loadEvents();
+      const today = new Date();
+      for(let i=0;i<prevDays;i++){
+        const cell = document.createElement('div'); cell.className='day out'; calendarEl.appendChild(cell);
+      }
+
+      for(let d=1; d<=daysInMonth; d++){
+        const cell = document.createElement('div'); cell.className='day';
+        const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        cell.dataset.date = dateStr;
+        const dateNum = document.createElement('div'); dateNum.className='date'; dateNum.textContent = d; cell.appendChild(dateNum);
+
+        // events dots
+        const ev = events[dateStr] || [];
+        if(ev.length){
+          const evWrap = document.createElement('div'); evWrap.className='events';
+          for(let e of ev.slice(0,3)){
+            const dot = document.createElement('div'); dot.className='dot'; dot.title = e; dot.style.background = '#f59e0b'; evWrap.appendChild(dot);
+          }
+          cell.appendChild(evWrap);
+        }
+
+        // highlight today
+        if(year===today.getFullYear() && month===today.getMonth() && d===today.getDate()){
+          cell.classList.add('today');
+        }
+
+        cell.addEventListener('click', ()=> openModal(dateStr));
+        calendarEl.appendChild(cell);
+
+        // add to quickDate
+        const opt = document.createElement('option'); opt.value = dateStr; opt.textContent = dateStr; quickDate.appendChild(opt);
+      }
+
+      // trailing empty cells to fill grid (optional)
+      const cellsSoFar = prevDays + daysInMonth;
+      const remainder = (7 - (cellsSoFar % 7)) % 7;
+      for(let i=0;i<remainder;i++){ const cell = document.createElement('div'); cell.className='day out'; calendarEl.appendChild(cell); }
+    }
+
+    function openModal(dateStr){
+      selectedDate = dateStr;
+      modalDateTitle.textContent = `Events — ${dateStr}`;
+      eventTitleInput.value = '';
+      renderEventsList();
+      modal.style.display = 'flex';
+    }
+
+    function renderEventsList(){
+      const events = loadEvents();
+      const list = events[selectedDate] || [];
+      eventsList.innerHTML = '';
+      if(list.length===0){ eventsList.innerHTML = '<div class="empty">No events for this date.</div>'; return; }
+      list.forEach((t, idx)=>{
+        const div = document.createElement('div'); div.className='event-item';
+        const span = document.createElement('div'); span.textContent = t;
+        const del = document.createElement('button'); del.textContent='Delete'; del.addEventListener('click', ()=>{ removeEvent(idx); });
+        div.appendChild(span); div.appendChild(del); eventsList.appendChild(div);
+      });
+    }
+
+    function addEvent(title){
+      if(!title) return;
+      const events = loadEvents();
+      events[selectedDate] = events[selectedDate] || [];
+      events[selectedDate].push(title);
+      saveEvents(events);
+      renderEventsList(); render();
+    }
+
+    function removeEvent(idx){
+      const events = loadEvents();
+      if(!events[selectedDate]) return;
+      events[selectedDate].splice(idx,1);
+      if(events[selectedDate].length===0) delete events[selectedDate];
+      saveEvents(events); renderEventsList(); render();
+    }
+
+    prevBtn.addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); render(); });
+    nextBtn.addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); render(); });
+    closeModalBtn.addEventListener('click', ()=>{ modal.style.display='none'; selectedDate=null; });
+    saveEventBtn.addEventListener('click', ()=>{ if(!selectedDate) return; addEvent(eventTitleInput.value.trim()); eventTitleInput.value=''; });
+
+    quickAdd.addEventListener('click', ()=>{}); // placeholder to avoid undefined
+    quickAdd.querySelector('#quickAdd').addEventListener('click', ()=>{
+      const d = quickDate.value; const t = quickTitle.value.trim(); if(!t){ alert('Enter an event title'); return;} 
+      const events = loadEvents(); events[d] = events[d] || []; events[d].push(t); saveEvents(events); quickTitle.value=''; render(); alert('Event added');
+    });
+
+    // initial render
+    render();
+  </script>
+</body>
+</html>
