@@ -1,11 +1,10 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 int main(){
-    int a;
+    int x;
     cout<<"enter a number:";
-    cin>>a;
-
-    for(int i=0; i<=100; i++){
+    cin>>x;
+    for(int i=0; i<=10; i++){
         cout<<i<<endl;
     }
 }
