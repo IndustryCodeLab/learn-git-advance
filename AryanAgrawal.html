@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velora Navbar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(circle at top, #0a0a1f, #000000);
+      color: #fff;
+    }
+
+    /* Navbar container */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 40px;
+      background: rgba(10, 10, 30, 0.8);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(128, 0, 255, 0.4);
+      border-bottom: 1px solid rgba(128, 0, 255, 0.4);
+      height: 50px;
+    }
+
+    .navbar .logo {
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #b366ff;
+      text-shadow: 0 0 15px #7f00ff;
+      cursor: pointer;
+    }
+
+  
+    .navbar .menu {
+      display: flex;
+      gap: 30px;
+    }
+
+    .navbar .menu a {
+      text-decoration: none;
+      color: #e0e0ff;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .navbar .menu a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #7f00ff, #00f0ff);
+      bottom: -5px;
+      left: 0;
+      transition: width 0.3s;
+      border-radius: 4px;
+    }
+
+    .navbar .menu a:hover {
+      color: #00f0ff;
+    }
+
+    .navbar .menu a:hover::after {
+      width: 100%;
+    }
+
+    .navbar .right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .navbar .right input {
+      padding: 5px 10px;
+      border-radius: 20px;
+      border: 1px solid #7f00ff;
+      background: rgba(20, 20, 40, 0.9);
+      color: #fff;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    .navbar .right input:focus {
+      border-color: #00f0ff;
+    }
+
+    .icon {
+      cursor: pointer;
+      font-size: 20px;
+      color: #b366ff;
+      transition: color 0.3s;
+    }
+
+    .icon:hover {
+      color: #00f0ff;
+    }
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="logo">VELORA</div>
+
+    <div class="menu">
+      <a href="#">Shop</a>
+      <a href="#">Mobile</a>
+      <a href="#">Universe Tech</a>
+      <a href="#">Nanotech Gear</a>
+      <a href="#">Accessories</a>
+    </div>
+
+    <div class="right">
+      <input type="text" placeholder="Search...">
+      <i class="fa-light fa-cart-shopping"></i>
+      <i class="fas fa-user icon"></i>
+
+    </div>
+  </div>
+
+</body>
+</html>
