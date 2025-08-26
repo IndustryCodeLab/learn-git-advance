@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Appointment Booking</title>
+  <style>
+    :root{ --accent:#4f46e5; --muted:#6b7280; --bg:#f8fafc; --card:#ffffff; }
+    *{box-sizing:border-box}
+    body{font-family:Inter,ui-sans-serif,system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#0f172a}
+    .container{max-width:960px;margin:40px auto;padding:20px}
+
+    .card{background:var(--card);border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06);padding:24px}
+    header{display:flex;gap:16px;align-items:center}
+    header h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin:8px 0 18px}
+
+    form{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .full{grid-column:1 / -1}
+    label{display:block;font-size:13px;margin-bottom:6px}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #e6edf3;border-radius:8px;font-size:14px}
+    input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 4px rgba(79,70,229,0.08);border-color:var(--accent)}
+
+    .inline{display:flex;gap:12px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:600;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid #e6edf3;color:var(--muted)}
+
+    .note{font-size:13px;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:700px){form{grid-template-columns:1fr} .container{margin:20px}}
+
+    /* confirmation */
+    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);visibility:hidden;opacity:0;transition:all .15s}
+    .modal.show{visibility:visible;opacity:1}
+    .modal-card{background:white;padding:22px;border-radius:12px;max-width:420px;width:92%;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <header>
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <rect width="20" height="20" x="2" y="2" rx="6" fill="var(--accent)" />
+          <path d="M7 11h6M7 15h6M9 7V5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <h1>Book an Appointment</h1>
+          <p class="lead">Choose a date & time that suits you. We'll send a confirmation email.</p>
+        </div>
+      </header>
+
+      <form id="appointmentForm" class="mt-4" novalidate>
+        <div>
+          <label for="firstName">First name</label>
+          <input id="firstName" name="firstName" type="text" placeholder="First name" required />
+        </div>
+
+        <div>
+          <label for="lastName">Last name</label>
+          <input id="lastName" name="lastName" type="text" placeholder="Last name" required />
+        </div>
+
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Enter Email" required />
+        </div>
+
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="" />
+        </div>
+
+        <div>
+          <label for="service">Service</label>
+          <select id="service" name="service" required>
+            <option value="">Select a service</option>
+            <option>Consultation (30 min)</option>
+            <option>Follow-up (15 min)</option>
+            <option>Full session (60 min)</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="date">Date</label>
+          <input id="date" name="date" type="date" required />
+        </div>
+
+        <div>
+          <label for="time">Time</label>
+          <input id="time" name="time" type="time" required />
+        </div>
+
+        <div class="full">
+          <label for="notes">Notes / Message</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Tell us anything relevant..."></textarea>
+        </div>
+
+        <div class="full inline" style="justify-content:space-between;align-items:center;margin-top:8px">
+          <div class="note">By booking you agree to our terms & privacy.</div>
+          <div>
+            <button type="button" class="btn ghost" id="clearBtn">Clear</button>
+            <button type="submit" class="btn">Confirm Appointment</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card" role="document">
+      <h2 id="modalTitle">Appointment requested</h2>
+      <p id="modalMsg" class="note">We sent a confirmation to your email (demo).</p>
+      <div style="margin-top:14px">
+        <button id="modalOk" class="btn">Okay</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple client-side validation + demo confirmation
+    const form = document.getElementById('appointmentForm');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMsg = document.getElementById('modalMsg');
+    const clearBtn = document.getElementById('clearBtn');
+    const modalOk = document.getElementById('modalOk');
+
+    // prevent selecting past date
+    const dateInput = document.getElementById('date');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // basic HTML5 validation check
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const payload = {};
+      for (const [k,v] of data.entries()) payload[k] = v;
+
+      // demo: store the appointment in localStorage (so it persists in browser)
+      const storage = JSON.parse(localStorage.getItem('appointments') || '[]');
+      storage.push(payload);
+      localStorage.setItem('appointments', JSON.stringify(storage));
+
+      // show modal confirmation
+      modalTitle.textContent = 'Appointment confirmed';
+      modalMsg.textContent = `Thanks, ${payload.firstName || ''}! We've saved your appointment for ${payload.date} at ${payload.time}.`;
+      showModal();
+    });
+
+    clearBtn.addEventListener('click', () => form.reset());
+    modalOk.addEventListener('click', hideModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+
+    function showModal(){
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+    }
+    function hideModal(){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+    }
+
+    // small accessibility: focus first invalid field on submit
+    form.addEventListener('invalid', (e) => {
+      e.preventDefault();
+      e.target.focus();
+    }, true);
+
+    // helper: prefill sample data when query param ?demo=1 is present
+    (function prefill(){
+      try{
+        const url = new URL(window.location.href);
+        if(url.searchParams.get('demo') === '1'){
+          document.getElementById('firstName').value='Sumit';
+          document.getElementById('lastName').value='Kumar';
+          document.getElementById('email').value='sumit@example.com';
+          document.getElementById('service').value='Consultation (30 min)';
+          const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+          document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
+          document.getElementById('time').value = '10:30';
+        }
+      }catch(err){/*ignore*/}
+    })();
+  </script>
+</body>
+</html>
