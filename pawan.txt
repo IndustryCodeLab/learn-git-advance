@@ -1,0 +1,7 @@
+Hello! My name is Pawan Verma and I belong to Kothri.
+ I’ve completed my first year from Rajiv Gandhi College and currently I’m pursuing Full Stack Development from Cybrom Institute. 
+ My family consists of six members:
+  my father is a farmer, my mother is a homemaker,
+   I have one elder sister, and my grandfather and grandmother live with us.
+    My strengths are quick learning and teamwork, while my weakness is overthinking.
+     My hobbies include playing football and travelling to hill stations.
