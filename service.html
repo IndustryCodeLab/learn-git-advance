@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Services — Your Brand</title>
+  <meta name="description" content="Professional services that help your business grow — web development, UI/UX, SEO, branding and more." />
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg-soft: #111833;
+      --card: #0f1630;
+      --text: #e8ecf8;
+      --muted: #a9b1c6;
+      --brand: #6a7dff;
+      --brand-2: #7ef6d7;
+      --border: #1f2746;
+      --accent: #ffe98a;
+      --radius: 16px;
+      --shadow: 0 20px 40px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(122, 146, 255, .25), transparent 60%),
+                  radial-gradient(900px 500px at -10% 20%, rgba(126, 246, 215, .2), transparent 60%),
+                  var(--bg);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container{ width: min(1100px, 92%); margin: 0 auto; }
+    .btn{ display: inline-flex; align-items: center; gap: .6rem; padding: .9rem 1.1rem; border-radius: calc(var(--radius) - 6px); border: 1px solid var(--border); background: linear-gradient(180deg, #1a2145, #121a38); color: var(--text); font-weight: 600; box-shadow: var(--shadow); transition: transform .15s ease, box-shadow .2s ease, background .2s ease; }
+    .btn:hover{ transform: translateY(-2px); box-shadow: 0 24px 44px rgba(0,0,0,.45); }
+    .btn.primary{ background: linear-gradient(180deg, var(--brand), #4b5df3); border-color: #4657f0; }
+    .btn.ghost{ background: transparent; backdrop-filter: blur(6px); }
+
+    header{ position: sticky; top: 0; z-index: 40; background: rgba(11,16,32,.6); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+    .nav{ display: flex; align-items: center; justify-content: space-between; padding: .9rem 0; }
+    .brand{ display: inline-flex; align-items: center; gap: .6rem; font-weight: 800; letter-spacing: .2px; }
+    .logo{ width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: inset 0 0 12px rgba(255,255,255,.35), 0 10px 24px rgba(106,125,255,.35); }
+    .navlinks{ display: none; gap: 1.2rem; color: var(--muted); }
+    @media (min-width: 860px){ .navlinks{ display: flex; } }
+
+    .hero{ padding: 64px 0 28px; text-align: center; }
+    .kicker{ color: var(--brand-2); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .8rem; }
+    .title{ font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1; margin: .6rem 0 .8rem; font-weight: 900; }
+    .subtitle{ color: var(--muted); font-size: clamp(1rem, 2.2vw, 1.15rem); max-width: 720px; margin: 0 auto; }
+    .cta{ margin-top: 1.4rem; display: inline-flex; gap: .8rem; flex-wrap: wrap; justify-content: center; }
+
+    .section{ padding: 48px 0; }
+    .section .head{ display: flex; align-items: end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 24px; }
+    .section h2{ font-size: clamp(1.4rem, 3.5vw, 2rem); margin: 0; }
+    .muted{ color: var(--muted); }
+
+    .grid{ display: grid; gap: 18px; }
+    @media (min-width: 700px){ .grid.cols-3{ grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 960px){ .grid.cols-4{ grid-template-columns: repeat(4, 1fr); } }
+
+    .card{ background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00)); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+    .card:hover{ border-color: #2c3663; }
+    .badge{ display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .6rem; background: #0f1a3a; border: 1px solid var(--border); border-radius: 999px; font-size: .75rem; color: var(--muted); }
+    .icon{ width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(106,125,255,.25), rgba(126,246,215,.15)); border: 1px solid var(--border); }
+    .card h3{ margin: 12px 0 6px; font-size: 1.1rem; }
+    .card p{ margin: 0; color: var(--muted); font-size: .95rem; }
+    .list{ margin: 14px 0 0; padding: 0; list-style: none; color: var(--muted); }
+    .list li{ display: flex; gap: .6rem; align-items: flex-start; padding: 6px 0; }
+    .list svg{ margin-top: 3px; flex: 0 0 auto; }
+
+    .pricing{ display: grid; gap: 18px; }
+    @media (min-width: 820px){ .pricing{ grid-template-columns: repeat(3, 1fr); } }
+    .price-card{ background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.0)); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: relative; }
+    .price{ font-size: 2rem; font-weight: 900; }
+    .per{ color: var(--muted); font-size: .95rem; }
+    .tag{ position: absolute; top: 14px; right: 14px; font-size: .7rem; padding: .3rem .5rem; border-radius: 999px; background: linear-gradient(135deg, var(--brand), #4b5df3); border: 1px solid #5362ff; font-weight: 700; }
+
+    details{ background: #101737; border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+    details + details{ margin-top: 10px; }
+    summary{ cursor: pointer; font-weight: 700; }
+    summary::-webkit-details-marker { display:none; }
+
+    footer{ border-top: 1px solid var(--border); margin-top: 40px; padding: 28px 0 48px; color: var(--muted); }
+    .foot{ display: grid; gap: 18px; }
+    @media (min-width: 780px){ .foot{ grid-template-columns: 1.4fr .8fr .8fr .8fr; } }
+    .small{ font-size: .85rem; }
+    .input{ background: #0f1630; border: 1px solid var(--border); color: var(--text); padding: .85rem 1rem; border-radius: calc(var(--radius) - 6px); width: 100%; }
+    .inline{ display: flex; gap: .6rem; }
+
+    /* Utility */
+    .mt-6{ margin-top: 1.25rem; }
+    .mt-8{ margin-top: 1.75rem; }
+    .center{ text-align: center; }
+    .w-full{ width: 100%; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Your Brand</span>
+      </a>
+      <nav class="navlinks">
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn" href="#contact" aria-label="Contact sales">Contact</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="kicker">Services</div>
+      <h1 class="title">Build. Launch. Grow.<br> Done-for-you digital services.</h1>
+      <p class="subtitle">From pixel-perfect websites to SEO and branding — we deliver business impact with fast turnarounds and transparent pricing.</p>
+      <div class="cta">
+        <a class="btn primary" href="#pricing">View Pricing</a>
+        <a class="btn ghost" href="#services">Explore Services</a>
+      </div>
+    </section>
+
+    <section id="services" class="section">
+      <div class="container">
+        <div class="head">
+          <h2>What we do</h2>
+          <p class="muted">Pick a package or mix-and-match. Flexible for startups, SMBs and agencies.</p>
+        </div>
+        <div class="grid cols-3">
+          <!-- Service 1 -->
+          <article class="card">
+            <span class="badge">
+              <span class="icon" aria-hidden="true">
+                <!-- code icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 17l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 7l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              Web Development
+            </span>
+            <h3>Modern Websites & Web Apps</h3>
+            <p>Responsive, accessible and blazing fast. HTML/CSS/JS, React, Next.js & more.</p>
+            <ul class="list">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Landing pages, eCommerce, dashboards
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                SEO-friendly & performance tuned
+              </li>
+            </ul>
+          </article>
+          <!-- Service 2 -->
+          <article class="card">
+            <span class="badge">
+              <span class="icon" aria-hidden="true">
+                <!-- brush icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 14.5L9.5 4 4 9.5 14.5 20 20 14.5z" stroke="currentColor" stroke-width="2"/></svg>
+              </span>
+              UI/UX Design
+            </span>
+            <h3>Interfaces that convert</h3>
+            <p>Wireframes to high‑fidelity designs. Design systems, prototyping, audits.</p>
+            <ul class="list">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Figma files, component libraries</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>User testing & heuristics</li>
+            </ul>
+          </article>
+          <!-- Service 3 -->
+          <article class="card">
+            <span class="badge">
+              <span class="icon" aria-hidden="true">
+                <!-- chart icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20V10" stroke="currentColor" stroke-width="2"/><path d="M10 20V4" stroke="currentColor" stroke-width="2"/><path d="M16 20v-7" stroke="currentColor" stroke-width="2"/></svg>
+              </span>
+              SEO & Growth
+            </span>
+            <h3>Get discovered, gain traffic</h3>
+            <p>On‑page SEO, audits, content strategy and analytics setup.</p>
+            <ul class="list">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Keyword research & mapping</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Analytics & reporting</li>
+            </ul>
+          </article>
+          <!-- Service 4 -->
+          <article class="card">
+            <span class="badge">
+              <span class="icon" aria-hidden="true">
+                <!-- cloud icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 17.5a4.5 4.5 0 00-1.3-8.8 6 6 0 10-11.7 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 18h12a3 3 0 000-6h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+              Hosting & DevOps
+            </span>
+            <h3>Fast & secure deployment</h3>
+            <p>Cloud infrastructure, CI/CD, uptime monitoring and backups.</p>
+            <ul class="list">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>VPS, Vercel, Netlify, AWS</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>SSL, caching, CDN</li>
+            </ul>
+          </article>
+          <!-- Service 5 -->
+          <article class="card">
+            <span class="badge">
+              <span class="icon" aria-hidden="true">
+                <!-- sparkles icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5L4 10.5 9 8l3-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              </span>
+              Branding
+            </span>
+            <h3>Brand identity & assets</h3>
+            <p>Logos, color systems, typography and brand kits ready to use.</p>
+            <ul class="list">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Logo suites & guidelines</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Social templates</li>
+            </ul>
+          </article>
+          <!-- Service 6 -->
+          <article class="card">
+            <span class="badge">
+              <span class="icon" aria-hidden="true">
+                <!-- shield icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="2"/></svg>
+              </span>
+              Maintenance
+            </span>
+            <h3>Care plans & support</h3>
+            <p>Monthly updates, security patches, content edits and priority support.</p>
+            <ul class="list">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Bug fixes & audits</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Content & asset updates</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="container">
+        <div class="head">
+          <h2>Transparent pricing</h2>
+          <p class="muted">Simple tiers. Custom quotes available for complex projects.</p>
+        </div>
+        <div class="pricing">
+          <article class="price-card">
+            <h3>Starter</h3>
+            <p class="muted">Best for landing pages and MVPs</p>
+            <div class="mt-6">
+              <span class="price">$499</span> <span class="per">/ project</span>
+              <ul class="list mt-6">
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>1–3 pages</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Mobile responsive</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Basic SEO setup</li>
+              </ul>
+              <a class="btn w-full mt-8" href="#contact">Choose Starter</a>
+            </div>
+          </article>
+          <article class="price-card" style="border-color:#5362ff">
+            <span class="tag">Most popular</span>
+            <h3>Growth</h3>
+            <p class="muted">Perfect for small business websites</p>
+            <div class="mt-6">
+              <span class="price">$1499</span> <span class="per">/ project</span>
+              <ul class="list mt-6">
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Up to 10 pages</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Blog & CMS</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Performance audit</li>
+              </ul>
+              <a class="btn primary w-full mt-8" href="#contact">Choose Growth</a>
+            </div>
+          </article>
+          <article class="price-card">
+            <h3>Scale</h3>
+            <p class="muted">For eCommerce & complex apps</p>
+            <div class="mt-6">
+              <span class="price">$2999+</span> <span class="per">/ project</span>
+              <ul class="list mt-6">
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Custom features & integrations</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>eCommerce & payment setup</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2"/></svg>Priority support</li>
+              </ul>
+              <a class="btn w-full mt-8" href="#contact">Talk to Sales</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="container">
+        <div class="head">
+          <h2>Frequently asked questions</h2>
+          <p class="muted">Quick answers about timelines, process and deliverables.</p>
+        </div>
+        <details>
+          <summary>How long does a typical project take?</summary>
+          <p class="small muted">Most Starter projects ship in 1–2 weeks, Growth in 2–4 weeks, and Scale varies based on scope.</p>
+        </details>
+        <details>
+          <summary>Do you offer post‑launch support?</summary>
+          <p class="small muted">Yes. Our Maintenance plans include updates, security patches and content changes.</p>
+        </details>
+        <details>
+          <summary>Can you work with existing designs?</summary>
+          <p class="small muted">Absolutely. We can implement your Figma/Sketch files, or refresh them if needed.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="head">
+          <h2>Start a project</h2>
+          <p class="muted">Tell us about your goals. We’ll get back within 24 hours.</p>
+        </div>
+        <form class="grid" style="grid-template-columns: 1fr; gap: 12px;" onsubmit="event.preventDefault(); alert('Thanks! We\'ll be in touch.');">
+          <div class="inline">
+            <input class="input" type="text" placeholder="Your name" required />
+            <input class="input" type="email" placeholder="Email address" required />
+          </div>
+          <input class="input" type="text" placeholder="Company (optional)" />
+          <select class="input" required>
+            <option value="" disabled selected>Select a service</option>
+            <option>Web Development</option>
+            <option>UI/UX Design</option>
+            <option>SEO & Growth</option>
+            <option>Branding</option>
+            <option>Hosting & DevOps</option>
+            <option>Maintenance</option>
+          </select>
+          <textarea class="input" rows="5" placeholder="Project details, timeline, budget"></textarea>
+          <button class="btn primary" type="submit">Request Quote</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <div>
+        <div class="brand"><span class="logo" aria-hidden="true"></span><span>Your Brand</span></div>
+        <p class="small mt-6">We help startups and businesses build beautiful products. Design, development and growth under one roof.</p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul class="list" style="margin-top:10px">
+          <li>Web Development</li>
+          <li>UI/UX Design</li>
+          <li>SEO & Growth</li>
+          <li>Branding</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="list" style="margin-top:10px">
+          <li>About</li>
+          <li>Work</li>
+          <li>Careers</li>
+          <li>Blog</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Subscribe</h4>
+        <p class="small">Get monthly tips & resources.</p>
+        <form class="inline" onsubmit="event.preventDefault(); alert('Subscribed!');">
+          <input class="input" type="email" placeholder="Email address" required />
+          <button class="btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="container" style="margin-top:22px; display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+      <span class="small">© <span id="year"></span> Your Brand. All rights reserved.</span>
+      <div class="small">
+        <a href="#">Terms</a> · <a href="#">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
