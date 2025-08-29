@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BookMyShow — Admin Profile</title>
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --panel: #151922;
+      --muted: #9aa4b2;
+      --text: #e8eef7;
+      --brand: #ff4757;
+      --brand-2:#ff6b81;
+      --good:#22c55e;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --border:#222836;
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    [data-theme="light"]{
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --muted: #637081;
+      --text: #121826;
+      --brand: #e50914; /* bms red */
+      --brand-2:#ff4d5f;
+      --good:#16a34a;
+      --warn:#d97706;
+      --bad:#dc2626;
+      --border:#e6e8ee;
+      --shadow: 0 10px 30px rgba(16,24,40,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans, "Helvetica Neue", "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background:var(--bg);
+    }
+    .layout{display:grid; grid-template-columns:260px 1fr; min-height:100vh}
+    aside{
+      background:linear-gradient(180deg, var(--panel), color-mix(in srgb, var(--panel) 88%, transparent));
+      border-right:1px solid var(--border);
+      padding:20px; position:sticky; top:0; align-self:start; height:100vh; overflow:auto;
+    }
+    .logo{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; font-size:20px; margin-bottom:20px}
+    .logo-badge{width:34px; height:34px; display:grid; place-items:center; color:white; border-radius:8px; background:linear-gradient(135deg, var(--brand), var(--brand-2))}
+    .search{
+      display:flex; align-items:center; gap:8px; background:var(--panel); border:1px solid var(--border); padding:10px; border-radius:12px; box-shadow:var(--shadow);
+    }
+    .search input{border:none; outline:none; background:transparent; color:var(--text); width:100%}
+    nav{margin-top:18px}
+    .nav-section{margin-top:10px}
+    .nav-title{font-size:12px; text-transform:uppercase; color:var(--muted); margin:18px 10px 8px}
+    .nav-link{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:var(--text); text-decoration:none; border:1px solid transparent}
+    .nav-link:hover{background:color-mix(in srgb, var(--panel) 94%, var(--brand) 6%); border-color:var(--border)}
+    .nav-link.active{background:linear-gradient(135deg, color-mix(in srgb, var(--panel) 85%, var(--brand) 15%), var(--panel)); border-color:var(--border)}
+    header{
+      position:sticky; top:0; z-index:10; background:color-mix(in srgb, var(--panel) 80%, transparent);
+      backdrop-filter: saturate(160%) blur(8px); border-bottom:1px solid var(--border);
+    }
+    .topbar{display:flex; align-items:center; justify-content:space-between; padding:14px 22px}
+    .top-actions{display:flex; align-items:center; gap:10px}
+    button, .btn{cursor:pointer; border:none; outline:none; background:var(--brand); color:#fff; border-radius:12px; padding:10px 14px; font-weight:600; box-shadow:var(--shadow)}
+    .btn.secondary{background:transparent; color:var(--text); border:1px solid var(--border)}
+    .btn.ghost{background:transparent; padding:8px 10px; box-shadow:none}
+    .btn.icon{padding:8px; display:grid; place-items:center; border-radius:10px}
+
+    main{padding:22px; display:grid; gap:18px}
+    .grid{display:grid; gap:18px}
+    .grid.cols-3{grid-template-columns: repeat(3, 1fr)}
+    .grid.cols-4{grid-template-columns: repeat(4, 1fr)}
+    .card{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:16px; box-shadow:var(--shadow)}
+    .card-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px}
+    .muted{color:var(--muted)}
+
+    .profile{display:grid; grid-template-columns:140px 1fr; gap:18px; align-items:center}
+    .avatar{width:120px; height:120px; border-radius:20px; background:linear-gradient(135deg, var(--brand), var(--brand-2)); display:grid; place-items:center; font-weight:900; font-size:36px; color:#fff}
+    .kv{display:grid; grid-template-columns:140px 1fr; gap:8px; margin-top:6px}
+    .kv .label{color:var(--muted)}
+
+    .stat{display:flex; align-items:center; gap:12px}
+    .stat .num{font-size:22px; font-weight:800}
+    .chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:color-mix(in srgb, var(--panel) 90%, var(--brand) 10%); border:1px solid var(--border); font-size:12px}
+
+    table{width:100%; border-collapse:collapse}
+    thead th{font-size:12px; text-transform:uppercase; letter-spacing:.4px; text-align:left; padding:12px; color:var(--muted); border-bottom:1px solid var(--border); cursor:pointer}
+    tbody td{padding:12px; border-bottom:1px solid var(--border)}
+    tbody tr:hover{background:color-mix(in srgb, var(--panel) 96%, var(--brand) 4%)}
+
+    .table-actions{display:flex; gap:8px}
+    .badge{padding:6px 10px; border-radius:999px; font-size:12px; border:1px solid var(--border)}
+    .badge.live{background:color-mix(in srgb, var(--good) 18%, var(--panel) 82%);}
+    .badge.draft{background:color-mix(in srgb, var(--warn) 18%, var(--panel) 82%);}
+
+    .flex{display:flex; gap:10px; align-items:center}
+    .right{margin-left:auto}
+
+    .pagination{display:flex; gap:8px; align-items:center; justify-content:flex-end; padding-top:12px}
+
+    .modal{position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; place-items:center; padding:20px}
+    .modal.open{display:grid}
+    .modal .sheet{width:min(720px, 96vw); background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:16px; box-shadow:var(--shadow)}
+    .form{display:grid; gap:12px}
+    .row{display:grid; gap:12px; grid-template-columns: repeat(2, 1fr)}
+    label{font-size:12px; color:var(--muted)}
+    input, select, textarea{width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text)}
+    textarea{min-height:90px; resize:vertical}
+
+    .toast{position:fixed; bottom:20px; right:20px; background:var(--panel); border:1px solid var(--border); box-shadow:var(--shadow); padding:12px 14px; border-radius:12px; display:none}
+    .toast.show{display:block}
+
+    canvas{width:100%; height:180px}
+
+    @media (max-width: 1024px){
+      .layout{grid-template-columns: 1fr}
+      aside{position:relative; height:auto}
+      .profile{grid-template-columns:1fr}
+      .grid.cols-4{grid-template-columns: repeat(2, 1fr)}
+      .grid.cols-3{grid-template-columns: repeat(1, 1fr)}
+      .row{grid-template-columns: 1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="logo"><span class="logo-badge">🎟️</span> BookMyShow Admin</div>
+      <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input id="globalSearch" placeholder="Search events, users, bookings" /></div>
+      <nav>
+        <div class="nav-section">
+          <div class="nav-title">Main</div>
+          <a class="nav-link active" href="#dashboard">Dashboard</a>
+          <a class="nav-link" href="#events">Events</a>
+          <a class="nav-link" href="#bookings">Bookings</a>
+          <a class="nav-link" href="#users">Users</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-title">Insights</div>
+          <a class="nav-link" href="#reports">Reports</a>
+          <a class="nav-link" href="#settings">Settings</a>
+          <a class="nav-link" href="#logout">Logout</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div>
+      <header>
+        <div class="topbar">
+          <div class="flex">
+            <div class="chip"><strong id="todayLabel"></strong><span class="muted" id="timeLabel"></span></div>
+          </div>
+          <div class="top-actions">
+            <button class="btn secondary" id="exportCsvBtn">Export Bookings CSV</button>
+            <button class="btn" id="addEventBtn">Add Event</button>
+            <button class="btn icon" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌓</button>
+            <button class="btn icon" id="editProfileBtn" title="Edit Profile" aria-label="Edit Profile">✏️</button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <!-- PROFILE -->
+        <section class="card" id="dashboard">
+          <div class="card-header"><h3 style="margin:0">Admin Profile</h3><span class="muted">Manage your profile and watch KPIs</span></div>
+          <div class="profile">
+            <div class="avatar" id="avatar">AD</div>
+            <div>
+              <h2 id="adminName" style="margin:0 0 4px">Admin Demo</h2>
+              <div class="muted" id="adminRole">Head of Events • Mumbai, IN</div>
+              <div class="kv">
+                <div class="label">Email</div><div id="adminEmail">admin@bookmyshow.test</div>
+                <div class="label">Phone</div><div id="adminPhone">+91 90000 00000</div>
+                <div class="label">Joined</div><div id="adminJoined">—</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="grid cols-4">
+          <div class="card stat"><div>🎫</div><div><div class="muted">Total Events</div><div class="num" id="statEvents">0</div></div></div>
+          <div class="card stat"><div>🧍</div><div><div class="muted">Tickets Sold (30d)</div><div class="num" id="statTickets">0</div></div></div>
+          <div class="card stat"><div>💰</div><div><div class="muted">Revenue (30d)</div><div class="num" id="statRevenue">₹0</div></div></div>
+          <div class="card stat"><div>📈</div><div><div class="muted">Avg. Occupancy</div><div class="num" id="statOcc">0%</div></div></div>
+        </section>
+
+        <!-- CHART & RECENT BOOKINGS -->
+        <section class="grid cols-3">
+          <div class="card" style="grid-column: span 2">
+            <div class="card-header"><strong>Tickets Sold — Last 7 Days</strong>
+              <div class="right">
+                <select id="chartMetric">
+                  <option value="tickets" selected>Tickets</option>
+                  <option value="revenue">Revenue</option>
+                </select>
+              </div>
+            </div>
+            <canvas id="barChart" width="600" height="220" aria-label="Tickets chart" role="img"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header"><strong>Quick Actions</strong></div>
+            <div class="grid" style="gap:10px">
+              <button class="btn" onclick="openEventModal()">Create New Event</button>
+              <button class="btn secondary" onclick="publishSelected()">Publish Selected</button>
+              <button class="btn secondary" onclick="unpublishSelected()">Unpublish Selected</button>
+              <button class="btn secondary" onclick="deleteSelected()">Delete Selected</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- EVENTS TABLE -->
+        <section class="card" id="events">
+          <div class="card-header">
+            <div class="flex" style="gap:12px">
+              <strong>Events</strong>
+              <span class="badge live" id="liveCount">Live: 0</span>
+              <span class="badge draft" id="draftCount">Draft: 0</span>
+            </div>
+            <div class="flex">
+              <input id="eventSearch" placeholder="Search events..." />
+              <select id="statusFilter">
+                <option value="all">All</option>
+                <option value="live">Live</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow:auto">
+            <table id="eventsTable">
+              <thead>
+                <tr>
+                  <th style="width:36px"><input type="checkbox" id="selectAll"></th>
+                  <th data-key="name">Event</th>
+                  <th data-key="city">City</th>
+                  <th data-key="date">Date</th>
+                  <th data-key="capacity">Capacity</th>
+                  <th data-key="sold">Sold</th>
+                  <th data-key="status">Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <button class="btn secondary" id="prevPage">Prev</button>
+            <span class="muted" id="pageLabel">Page 1/1</span>
+            <button class="btn secondary" id="nextPage">Next</button>
+          </div>
+        </section>
+
+        <!-- BOOKINGS (RECENT) -->
+        <section class="card" id="bookings">
+          <div class="card-header">
+            <strong>Recent Bookings</strong>
+            <input id="bookingSearch" placeholder="Search bookings by user/event" />
+          </div>
+          <div style="overflow:auto">
+            <table id="bookingsTable">
+              <thead>
+                <tr>
+                  <th data-key="id">ID</th>
+                  <th data-key="user">User</th>
+                  <th data-key="event">Event</th>
+                  <th data-key="qty">Qty</th>
+                  <th data-key="amount">Amount</th>
+                  <th data-key="date">Date</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+    <div class="sheet">
+      <div class="card-header"><h3 id="profileTitle" style="margin:0">Edit Profile</h3><button class="btn ghost" onclick="closeModal('profileModal')">✖</button></div>
+      <form class="form" id="profileForm">
+        <div class="row">
+          <div><label>Name</label><input name="name" required /></div>
+          <div><label>Role</label><input name="role" /></div>
+        </div>
+        <div class="row">
+          <div><label>Email</label><input name="email" type="email" required /></div>
+          <div><label>Phone</label><input name="phone" /></div>
+        </div>
+        <div class="row">
+          <div><label>Location</label><input name="location" placeholder="City, Country" /></div>
+          <div><label>Joined</label><input name="joined" type="date" /></div>
+        </div>
+        <div class="flex" style="justify-content:flex-end">
+          <button type="button" class="btn secondary" onclick="closeModal('profileModal')">Cancel</button>
+          <button class="btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="eventTitle">
+    <div class="sheet">
+      <div class="card-header"><h3 id="eventTitle" style="margin:0">Create / Edit Event</h3><button class="btn ghost" onclick="closeModal('eventModal')">✖</button></div>
+      <form class="form" id="eventForm">
+        <input type="hidden" name="id" />
+        <div class="row">
+          <div><label>Event Name</label><input name="name" required /></div>
+          <div><label>City</label><input name="city" required /></div>
+        </div>
+        <div class="row">
+          <div><label>Date & Time</label><input name="datetime" type="datetime-local" required /></div>
+          <div><label>Capacity</label><input name="capacity" type="number" min="0" required /></div>
+        </div>
+        <div class="row">
+          <div><label>Price (₹)</label><input name="price" type="number" min="0" step="1" required /></div>
+          <div><label>Status</label>
+            <select name="status">
+              <option value="live">Live</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label>Description</label>
+          <textarea name="description" placeholder="Short description..."></textarea>
+        </div>
+        <div class="flex" style="justify-content:flex-end">
+          <button type="button" class="btn secondary" onclick="closeModal('eventModal')">Cancel</button>
+          <button class="btn">Save Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // --- Demo Data ---
+    const state = {
+      profile: JSON.parse(localStorage.getItem('bms_admin_profile')||'null') || {
+        name:'Admin Demo', role:'Head of Events', email:'admin@bookmyshow.test', phone:'+91 90000 00000', location:'Mumbai, IN', joined:'2024-01-15'
+      },
+      events: JSON.parse(localStorage.getItem('bms_events')||'null') || [
+        {id:1, name:'Jawan Re-Run Premiere', city:'Mumbai', date:'2025-09-01T19:30', capacity:800, sold:620, price:350, status:'live'},
+        {id:2, name:'Arijit Singh Live', city:'Delhi', date:'2025-09-10T20:00', capacity:12000, sold:10350, price:1999, status:'live'},
+        {id:3, name:'Stand-up: Kenny Sebastian', city:'Bengaluru', date:'2025-09-05T19:00', capacity:900, sold:540, price:699, status:'draft'},
+        {id:4, name:'India vs Aus – Screening', city:'Pune', date:'2025-09-07T18:00', capacity:500, sold:430, price:499, status:'live'},
+        {id:5, name:'Classical Night', city:'Kolkata', date:'2025-09-12T18:30', capacity:700, sold:120, price:399, status:'draft'}
+      ],
+      bookings: Array.from({length:24}).map((_,i)=>({
+        id:1001+i,
+        user:['Aarav','Vivaan','Diya','Isha','Kabir','Anaya','Rohit','Sneha','Rahul','Nia'][i%10]+" "+['Sharma','Verma','Gupta','Patel'][i%4],
+        event:['Jawan Re-Run Premiere','Arijit Singh Live','Stand-up: Kenny Sebastian','India vs Aus – Screening'][i%4],
+        qty: (i%5)+1,
+        amount: ((i%5)+1) * [350,1999,699,499][i%4],
+        date: new Date(Date.now()- (i*86400000)).toISOString().slice(0,10)
+      })),
+      page:1, pageSize:5, sort:{key:'date', dir:'desc'},
+      theme: localStorage.getItem('bms_theme')||'light'
+    };
+
+    // --- Utils ---
+    const qs = (s, p=document) => p.querySelector(s);
+    const qsa = (s, p=document) => [...p.querySelectorAll(s)];
+    const formatINR = n => `₹${n.toLocaleString('en-IN')}`;
+    const showToast = (msg)=>{const t=qs('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800)}
+
+    // --- Theme ---
+    function applyTheme(){
+      document.documentElement.setAttribute('data-theme', state.theme);
+      localStorage.setItem('bms_theme', state.theme);
+    }
+
+    // --- Profile ---
+    function initials(name){
+      return name.split(/\s+/).slice(0,2).map(s=>s[0]?.toUpperCase()).join('')
+    }
+    function renderProfile(){
+      qs('#adminName').textContent = state.profile.name;
+      qs('#adminRole').textContent = `${state.profile.role} • ${state.profile.location}`;
+      qs('#adminEmail').textContent = state.profile.email;
+      qs('#adminPhone').textContent = state.profile.phone;
+      qs('#adminJoined').textContent = new Date(state.profile.joined).toLocaleDateString('en-IN');
+      qs('#avatar').textContent = initials(state.profile.name);
+    }
+
+    // --- Stats ---
+    function renderStats(){
+      const tickets30 = state.bookings.filter(b=> (Date.now()-new Date(b.date).getTime())<= (30*86400000))
+                        .reduce((a,b)=>a+b.qty,0);
+      const revenue30 = state.bookings.filter(b=> (Date.now()-new Date(b.date).getTime())<= (30*86400000))
+                        .reduce((a,b)=>a+b.amount,0);
+      const totalEvents = state.events.length;
+      const occ = Math.round(100* state.events.reduce((a,e)=>a+e.sold,0) / state.events.reduce((a,e)=>a+e.capacity,0));
+      qs('#statEvents').textContent = totalEvents;
+      qs('#statTickets').textContent = tickets30.toLocaleString('en-IN');
+      qs('#statRevenue').textContent = formatINR(revenue30);
+      qs('#statOcc').textContent = isFinite(occ)? occ+"%" : '0%';
+    }
+
+    // --- Chart ---
+    function renderChart(metric='tickets'){
+      const c = qs('#barChart');
+      const ctx = c.getContext('2d');
+      const days = [...Array(7)].map((_,i)=>{
+        const d = new Date(Date.now()- (6-i)*86400000);
+        const label = d.toLocaleDateString('en-IN',{weekday:'short'});
+        return {label, date: d.toISOString().slice(0,10)}
+      });
+      const data = days.map(d=>{
+        const related = state.bookings.filter(b=> b.date===d.date);
+        const val = metric==='tickets' ? related.reduce((a,b)=>a+b.qty,0)
+                                       : related.reduce((a,b)=>a+b.amount,0);
+        return val;
+      });
+      // clear
+      ctx.clearRect(0,0,c.width,c.height);
+      // axes
+      const padding = 30; const W=c.width, H=c.height; const chartW=W-padding*2; const chartH=H-padding*2;
+      const max = Math.max(10, ...data); const step = chartW / data.length; const scale = chartH / max;
+      ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--border');
+      ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text');
+      ctx.font = '12px system-ui';
+      // grid & labels
+      for(let i=0;i<=4;i++){
+        const y = padding + chartH - (i/4)*chartH;
+        ctx.globalAlpha = 0.6; ctx.beginPath(); ctx.moveTo(padding,y); ctx.lineTo(padding+chartW,y); ctx.stroke(); ctx.globalAlpha=1;
+        const lbl = Math.round((i/4)*max);
+        ctx.fillText(lbl.toLocaleString('en-IN'), 4, y+4);
+      }
+      // bars
+      const brand = getComputedStyle(document.body).getPropertyValue('--brand');
+      for(let i=0;i<data.length;i++){
+        const x = padding + i*step + step*0.15;
+        const bw = step*0.7;
+        const h = data[i]*scale;
+        ctx.fillStyle = brand; ctx.globalAlpha=0.9; ctx.fillRect(x, padding + chartH - h, bw, h); ctx.globalAlpha=1;
+        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--muted');
+        ctx.fillText(days[i].label, x, padding + chartH + 16);
+      }
+    }
+
+    // --- Events Table ---
+    function computeLiveDraft(){
+      const live = state.events.filter(e=>e.status==='live').length;
+      const draft = state.events.length - live;
+      qs('#liveCount').textContent = `Live: ${live}`;
+      qs('#draftCount').textContent = `Draft: ${draft}`;
+    }
+
+    function getEventRows(){
+      const term = qs('#eventSearch').value.trim().toLowerCase();
+      const status = qs('#statusFilter').value;
+      return state.events.filter(e=>{
+        const matches = !term || [e.name,e.city].join(' ').toLowerCase().includes(term);
+        const statusOk = status==='all' || e.status===status;
+        return matches && statusOk;
+      }).sort((a,b)=> new Date(a.date)-new Date(b.date));
+    }
+
+    function renderEvents(){
+      const tbody = qs('#eventsTable tbody');
+      tbody.innerHTML = '';
+      const rows = getEventRows();
+      const start = (state.page-1)*state.pageSize;
+      const paged = rows.slice(start, start+state.pageSize);
+      for(const e of paged){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input type="checkbox" data-id="${e.id}" class="rowCheck"></td>
+          <td><strong>${e.name}</strong></td>
+          <td>${e.city}</td>
+          <td>${new Date(e.date).toLocaleString('en-IN')}</td>
+          <td>${e.capacity.toLocaleString('en-IN')}</td>
+          <td>${e.sold.toLocaleString('en-IN')}</td>
+          <td><span class="badge ${e.status}">${e.status}</span></td>
+          <td class="table-actions">
+            <button class="btn secondary" onclick="openEventModal(${e.id})">Edit</button>
+            <button class="btn secondary" onclick="togglePublish(${e.id})">${e.status==='live'?'Unpublish':'Publish'}</button>
+            <button class="btn secondary" onclick="removeEvent(${e.id})">Delete</button>
+          </td>`;
+        tbody.appendChild(tr);
+      }
+      const pages = Math.max(1, Math.ceil(rows.length/state.pageSize));
+      qs('#pageLabel').textContent = `Page ${state.page}/${pages}`;
+      qs('#prevPage').disabled = state.page<=1; qs('#nextPage').disabled = state.page>=pages;
+      computeLiveDraft();
+      localStorage.setItem('bms_events', JSON.stringify(state.events));
+      renderStats();
+      renderChart(qs('#chartMetric').value);
+    }
+
+    function selectedIds(){ return qsa('.rowCheck:checked').map(c=>+c.dataset.id) }
+
+    // --- Bookings Table ---
+    function renderBookings(){
+      const term = qs('#bookingSearch').value.trim().toLowerCase();
+      const rows = state.bookings.filter(b=> !term || `${b.user} ${b.event}`.toLowerCase().includes(term));
+      const tbody = qs('#bookingsTable tbody'); tbody.innerHTML='';
+      rows.sort((a,b)=> new Date(b.date)-new Date(a.date));
+      for(const b of rows.slice(0,10)){
+        const tr=document.createElement('tr');
+        tr.innerHTML = `<td>${b.id}</td><td>${b.user}</td><td>${b.event}</td><td>${b.qty}</td><td>${formatINR(b.amount)}</td><td>${new Date(b.date).toLocaleDateString('en-IN')}</td>`
+        tbody.appendChild(tr);
+      }
+    }
+
+    // --- CSV Export ---
+    function exportCsv(){
+      const headers = ['ID','User','Event','Qty','Amount','Date'];
+      const rows = state.bookings.map(b=>[b.id,b.user,b.event,b.qty,b.amount,b.date]);
+      const csv = [headers, ...rows].map(r=>r.map(x=>`"${String(x).replace(/"/g,'\"')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'bookings.csv'; a.click();
+    }
+
+    // --- Modals (Profile/Event) ---
+    function openProfileModal(){
+      const f = qs('#profileForm');
+      f.name.value = state.profile.name; f.role.value = state.profile.role; f.email.value = state.profile.email; f.phone.value = state.profile.phone; f.location.value = state.profile.location; f.joined.value = state.profile.joined;
+      qs('#profileModal').classList.add('open');
+    }
+    function openEventModal(id){
+      const f = qs('#eventForm');
+      if(id){
+        const e = state.events.find(x=>x.id===id);
+        f.id.value = e.id; f.name.value = e.name; f.city.value = e.city; f.datetime.value = e.date; f.capacity.value = e.capacity; f.price.value = e.price; f.status.value = e.status; f.description.value = e.description || '';
+      } else {
+        f.reset(); f.id.value=''; f.datetime.value = new Date().toISOString().slice(0,16);
+      }
+      qs('#eventModal').classList.add('open');
+    }
+    function closeModal(id){ qs('#'+id).classList.remove('open') }
+
+    // --- Actions ---
+    function saveProfile(e){ e.preventDefault(); const f=e.target; state.profile = {name:f.name.value, role:f.role.value, email:f.email.value, phone:f.phone.value, location:f.location.value, joined:f.joined.value}; localStorage.setItem('bms_admin_profile', JSON.stringify(state.profile)); renderProfile(); closeModal('profileModal'); showToast('Profile updated') }
+
+    function saveEvent(e){ e.preventDefault(); const f=e.target; const payload = { id: f.id.value? +f.id.value : Math.max(0,...state.events.map(x=>x.id))+1, name:f.name.value, city:f.city.value, date:f.datetime.value, capacity:+f.capacity.value, sold:0, price:+f.price.value, status:f.status.value, description:f.description.value };
+      const idx = state.events.findIndex(x=>x.id===payload.id);
+      if(idx>-1){ state.events[idx] = {...state.events[idx], ...payload}; showToast('Event updated') }
+      else { state.events.unshift(payload); showToast('Event created') }
+      closeModal('eventModal'); state.page=1; renderEvents(); }
+
+    function togglePublish(id){ const e = state.events.find(x=>x.id===id); e.status = e.status==='live'?'draft':'live'; renderEvents(); showToast(e.status==='live'?'Published':'Unpublished') }
+    function removeEvent(id){ state.events = state.events.filter(x=>x.id!==id); renderEvents(); showToast('Event deleted') }
+
+    function publishSelected(){ for(const id of selectedIds()){ const e=state.events.find(x=>x.id===id); if(e) e.status='live' } renderEvents(); showToast('Selected events published') }
+    function unpublishSelected(){ for(const id of selectedIds()){ const e=state.events.find(x=>x.id===id); if(e) e.status='draft' } renderEvents(); showToast('Selected events unpublished') }
+    function deleteSelected(){ state.events = state.events.filter(e=>!selectedIds().includes(e.id)); renderEvents(); showToast('Selected events deleted') }
+
+    // --- Sorting by header click (events) ---
+    qsa('#eventsTable thead th[data-key]').forEach(th=>{
+      th.addEventListener('click', ()=>{
+        const key = th.dataset.key; const dir = th.dataset.dir==='asc'?'desc':'asc'; th.dataset.dir = dir;
+        state.events.sort((a,b)=>{
+          const av = key==='date'? new Date(a[key]) : a[key];
+          const bv = key==='date'? new Date(b[key]) : b[key];
+          return dir==='asc' ? (av>bv?1:-1) : (av<bv?1:-1);
+        });
+        renderEvents();
+      })
+    })
+
+    // --- Listeners ---
+    qs('#themeToggle').addEventListener('click', ()=>{ state.theme = state.theme==='light'?'dark':'light'; applyTheme(); renderChart(qs('#chartMetric').value) })
+    qs('#editProfileBtn').addEventListener('click', openProfileModal);
+    qs('#addEventBtn').addEventListener('click', ()=>openEventModal());
+    qs('#profileForm').addEventListener('submit', saveProfile);
+    qs('#eventForm').addEventListener('submit', saveEvent);
+    qs('#selectAll').addEventListener('change', (e)=> qsa('.rowCheck').forEach(c=>c.checked=e.target.checked));
+    qs('#eventSearch').addEventListener('input', ()=>{ state.page=1; renderEvents() });
+    qs('#statusFilter').addEventListener('change', ()=>{ state.page=1; renderEvents() });
+    qs('#prevPage').addEventListener('click', ()=>{ state.page=Math.max(1,state.page-1); renderEvents() });
+    qs('#nextPage').addEventListener('click', ()=>{ state.page=state.page+1; renderEvents() });
+    qs('#bookingSearch').addEventListener('input', renderBookings);
+    qs('#exportCsvBtn').addEventListener('click', exportCsv);
+    qs('#chartMetric').addEventListener('change', (e)=>renderChart(e.target.value));
+
+    // Topbar date/time
+    function updateClock(){
+      const now = new Date();
+      qs('#todayLabel').textContent = now.toLocaleDateString('en-IN',{day:'2-digit', month:'short', year:'numeric'});
+      qs('#timeLabel').textContent = now.toLocaleTimeString('en-IN');
+    }
+    setInterval(updateClock, 1000); updateClock();
+
+    // Global search highlights simple navigation intent
+    qs('#globalSearch').addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){
+        const val = e.target.value.toLowerCase();
+        if(val.includes('event')) location.hash = '#events';
+        else if(val.includes('booking')) location.hash = '#bookings';
+        else location.hash = '#dashboard';
+      }
+    })
+
+    // --- Init ---
+    applyTheme();
+    renderProfile();
+    renderStats();
+    renderEvents();
+    renderBookings();
+    renderChart();
+  </script>
+</body>
+</html>
