@@ -1,2 +1,5 @@
 g=10
-print(g)
+a =19
+b=12
+print(g +a+b)
+
