@@ -37,7 +37,7 @@ public:
 int main() {
     Solution sol;
     string s;
-    getline(cin, s); // use getline for spaces
+    getline(cin, s);  
     cout << sol.myAtoi(s) << endl;
     return 0;
 }
