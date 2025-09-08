@@ -1,3 +1,0 @@
- hello! myself Tanish singh parihar.
- i have created this file to enter about myself and also for learning git in advance.
- i have been assigned this task to write about myself. 
