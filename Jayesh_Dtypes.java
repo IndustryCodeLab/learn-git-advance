@@ -12,6 +12,7 @@ class Dtypes
         System.out.println("enter a value");
         String s = sc.nextLine();
         System.out.println(c+" "+s);
+        System.out.println("This is done by vivek");
 
     }
 
