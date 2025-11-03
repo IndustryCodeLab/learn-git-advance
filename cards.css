@@ -1,0 +1,50 @@
+.card {
+      background: #5c9ded;
+      color: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .card h2 {
+      font-size: 22px;
+      margin: 15px 0 10px;
+      color: #c9f0ff;
+      font-weight: bold;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #d6f5ff;
+      margin-bottom: 20px;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+      margin: 0;
+    }
+
+    .card ul li {
+      margin: 10px 0;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      color: #d6f5ff;
+    }
+
+    .card ul li span {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+  
