@@ -1,0 +1,1 @@
+print("New era is begin.")
