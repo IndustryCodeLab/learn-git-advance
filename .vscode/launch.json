@@ -8,8 +8,13 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
+ Jaywant/AI_ML
+      "cwd": "c:/Users/jaywa/Desktop/industrycodelab/learn-git-advance/jaywant",
+      "program": "c:/Users/jaywa/Desktop/industrycodelab/learn-git-advance/jaywant/build/Debug/outDebug",
+=======
       "cwd": "c:/Users/AURANGJEB KHAN/OneDrive/Desktop/industr_code lab/learn-git-advance",
       "program": "c:/Users/AURANGJEB KHAN/OneDrive/Desktop/industr_code lab/learn-git-advance/build/Debug/outDebug",
+ main
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
