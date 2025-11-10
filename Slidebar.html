@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bansal College</title>
+  <style>
+    /* Header styling */
+    #myHead {
+      padding: 10px;
+      font-size: 4vw;
+      color: brown;
+      text-align: center;
+      background: linear-gradient(to left, rgb(239,68,162), rgb(211,201,4), rgb(10,101,238));
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color:antiquewhite;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+      z-index: 2;
+    }
+
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 20px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #575757;
+    }
+
+    /* Open button */
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: rgb(14, 182, 129);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 3;
+      border-radius: 5px;
+    }
+
+    .openbtn:hover {
+      background-color:darksalmon;
+    }
+
+    
+    .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 30px;
+      color: white;
+    }
+
+    #mycarousel {
+      width: 100%;
+      height: 400px;
+      display: block;
+    }
+
+
+    #content {
+      margin: 20px;
+      padding: 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar toggle button -->
+  <button class="openbtn" onclick="openNav()">☰ Menu</button>
+
+
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="#" onclick="showContent('home')">Home</a>
+    <a href="#" onclick="showContent('about')">About College</a>
+    <a href="#" onclick="showContent('courses')">Courses</a>
+    <a href="#" onclick="showContent('admissions')">Admissions</a>
+    <a href="#" onclick="showContent('contact')">Contact</a>
+  </div>
+
+  <!-- Header -->
+  <div id="myHead">
+    Bansal College of Engineering
+  </div>
+
+  <!-- Carousel -->
+  <div>
+    <img id="mycarousel" src="/Asset/image/b4751-17159410592278-1920.webp" alt="carousel image">
+  </div>
+
+  
+  <div id="content">
+    <p>Welcome to Bansal College of Engineering. Click on the menu to explore more information!</p>
+  </div>
+
+  <script>
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "250px";
+    }
+
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+    }
+
+    
+    var mymtImages = [
+      "/Asset/image/bird.png",
+      "/Asset/image/b4751-17159410592278-1920.webp"
+    ];
+    var index = 0;
+
+    function slideshow() {
+      var myImg = document.getElementById("mycarousel");
+      index = (index + 1) % mymtImages.length;
+      myImg.src = mymtImages[index];
+      setTimeout(slideshow, 3000);
+    }
+
+    slideshow();
+
+
+    function showContent(section) {
+      let content = document.getElementById("content");
+      let text = "";
+
+      switch (section) {
+        case "home":
+          text = "Welcome to Bansal College of Engineering! Our institution is dedicated to excellence in education, innovation, and leadership.";
+          break;
+        case "about":
+          text = "Bansal College of Engineering is one of the premier engineering colleges in India, providing top-quality education and state-of-the-art facilities.";
+          break;
+        case "courses":
+          text = "We offer courses in Computer Science, Mechanical Engineering, Civil Engineering, Electrical Engineering, and more.";
+          break;
+        case "admissions":
+          text = "Admissions are open! Apply now through our official portal and begin your journey toward a successful career.";
+          break;
+        case "contact":
+          text = "Contact us at: info@bansalcollege.edu.in or call +91-9876543210 for more details.";
+          break;
+        default:
+          text = "Click on a menu item to view more details.";
+      }
+
+      content.innerHTML = `<p>${text}</p>`;
+      closeNav(); 
+    }
+  </script>
+</body>
+</html>

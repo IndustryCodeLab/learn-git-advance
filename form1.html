@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sample Contact Form</title>
+  <style>
+    :root{--bg:#f7f8fb;--card:#ffffff;--accent:#0b76ff;--muted:#6b7280}
+    body{font-family:Inter, system-ui, -apple-system, Arial; background:var(--bg); margin:0; padding:40px; color:#111}
+    .container{max-width:720px;margin:0 auto}
+    .card{background:var(--card); padding:28px;border-radius:12px; box-shadow:0 6px 18px rgba(12,20,40,0.06)}
+    h1{margin:0 0 18px;font-size:20px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+    input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea{width:100%; padding:10px 12px;border:1px solid #e6e9ef;border-radius:8px;font-size:14px}
+    textarea{min-height:110px;resize:vertical}
+    .full{grid-column:1/-1}
+    .actions{display:flex;gap:10px;align-items:center;margin-top:14px}
+    button{background:var(--accent);color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer}
+    button[type=button]{background:#e6eefc;color:var(--accent)}
+    .hint{font-size:13px;color:var(--muted)}
+    .error{color:#b91c1c;font-size:13px;margin-top:6px}
+    .inline{display:flex;gap:8px;align-items:center}
+    @media (max-width:600px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Contact Form / सम्पर्क फ़ॉर्म</h1>
+      <form id="contactForm" autocomplete="on">
+        <div class="grid">
+          <div>
+            <label for="name">पूरा नाम (Name)</label>
+            <input type="text" id="name" name="name" placeholder="आपका नाम" required />
+          </div>
+          <div>
+            <label for="email">ईमेल (Email)</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <div>
+            <label for="phone">फ़ोन नंबर (Phone)</label>
+            <input type="tel" id="phone" name="phone" placeholder="+91 9XXXXXXXXX" pattern="\\+?[0-9\s-]{7,15}" />
+            <div class="hint">Country code optional — pattern: digits, spaces or dashes</div>
+          </div>
+
+          <div>
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="full">
+            <label for="message">Message / संदेश</label>
+            <textarea id="message" name="message" placeholder="अपना संदेश लिखें..." required></textarea>
+          </div>
+
+          <div class="full">
+            <label for="dob">जन्म तारीख (DOB)</label>
+            <input type="date" id="dob" name="dob" />
+          </div>
+
+          <div class="full">
+            <label for="resume">Resume (optional) — फ़ाइल अपलोड</label>
+            <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" />
+            <div class="hint">Allowed: .pdf, .doc, .docx — max 5MB (client-side check)</div>
+          </div>
+
+          <div class="full inline">
+            <input type="checkbox" id="agree" name="agree" required />
+            <label for="agree">I agree to the terms and conditions / नियमों से सहमत हूँ</label>
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button type="submit">Send / भेजें</button>
+          <button type="button" id="resetBtn">Reset</button>
+          <div class="hint" id="status" aria-live="polite"></div>
+        </div>
+
+        <div id="formErrors" class="error" role="alert" aria-atomic="true"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('status');
+    const formErrors = document.getElementById('formErrors');
+    const resetBtn = document.getElementById('resetBtn');
+
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      formErrors.textContent = '';
+      status.textContent = '';
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      formErrors.textContent = '';
+      status.textContent = '';
+
+      // Simple client-side validations
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      const resume = form.resume.files[0];
+
+      const errors = [];
+      if (!name) errors.push('Name is required. / नाम आवश्यक है।');
+      if (!email) errors.push('Email is required. / ईमेल आवश्यक है।');
+      if (!message) errors.push('Message is required. / संदेश आवश्यक है।');
+
+      if (resume) {
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (resume.size > maxSize) errors.push('Resume file too large (max 5MB). / फ़ाइल बहुत बड़ी है।');
+      }
+
+      if (errors.length) {
+        formErrors.innerHTML = errors.join('<br>');
+        return;
+      }
+
+      // Create form data (could be sent via fetch to server)
+      const fd = new FormData(form);
+
+      // Simulate sending: here we just display values in status
+      const preview = [];
+      fd.forEach((v,k) => {
+        if (v instanceof File) {
+          preview.push(`${k}: ${v.name || 'no file'}`);
+        } else {
+          preview.push(`${k}: ${v}`);
+        }
+      });
+
+      status.textContent = 'Form ready to send. Preview in console.';
+      console.log('Form submission preview:', preview);
+
+
+    });
+  </script>
+</body>
+</html>
