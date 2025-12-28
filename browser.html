@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Info App</title>
+</head>
+<body>
+  <h1>Browser Info App</h1>
+  <div id="info"></div>
+
+  <script>
+    function showBrowserInfo() {
+      let output = `
+        <strong>Window Size:</strong> ${window.innerWidth} x ${window.innerHeight} <br>
+        <strong>Current URL:</strong> ${location.href} <br>
+        <strong>Browser Language:</strong> ${navigator.language} <br>
+        <strong>User Agent:</strong> ${navigator.userAgent} <br>
+        <strong>Screen Resolution:</strong> ${screen.width} x ${screen.height} <br>
+        <strong>Online Status:</strong> ${navigator.onLine ? "Online" : "Offline"} <br>
+      `;
+      document.getElementById("info").innerHTML = output;
+    }
+
+    // Run function when page loads
+    showBrowserInfo();
+    history.back()
+  </script>
+</body>
+</html>
