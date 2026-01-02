@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lumina Jewellery — Timeless Pieces</title>
+  <meta name="description" content="Elegant jewellery storefront template — responsive, modern, and fast. Single file HTML/CSS/JS." />
+  <style>
+    :root{
+      --bg: #0b1020;
+      --card: #121a2e;
+      --muted: #9fb0d0;
+      --text: #e6ecff;
+      --accent: #e7c287; /* champagne gold */
+      --accent-2: #a78bfa; /* soft amethyst */
+      --ring: rgba(231, 194, 135, .4);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 90% -10%, rgba(167,139,250,.15), transparent),
+                  radial-gradient(900px 500px at -10% 20%, rgba(231,194,135,.12), transparent),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a{color:inherit;text-decoration:none}
+
+    /* ---------- Layout ---------- */
+    .container{max-width:1200px;margin-inline:auto;padding:24px}
+
+    /* ---------- Top Bar ---------- */
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 24px;position:sticky;top:0;background:rgba(11,16,32,.7);backdrop-filter: blur(8px);border-bottom:1px solid rgba(255,255,255,.06);z-index:50}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.6px}
+    .brand svg{width:28px;height:28px}
+    .nav{display:flex;align-items:center;gap:20px}
+    .nav a{opacity:.9}
+    .nav a:hover{opacity:1}
+    .search{flex:1;display:flex;max-width:420px;gap:10px;margin:0 12px}
+    .input{flex:1;background:#0f172a;border:1px solid rgba(255,255,255,.08);padding:10px 12px;border-radius:12px;color:var(--text)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(231,194,135,.2),rgba(231,194,135,.05));color:var(--text);cursor:pointer;box-shadow:var(--shadow)}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:#0f172a}
+    .pill{padding:6px 12px;border:1px solid rgba(255,255,255,.12);border-radius:999px;opacity:.9}
+
+    .cart-indicator{position:relative}
+    .badge{position:absolute;top:-6px;right:-6px;background:var(--accent);color:#241c15;border-radius:999px;padding:2px 6px;font-size:12px;font-weight:700}
+
+    .hamburger{display:none}
+
+    /* ---------- Hero ---------- */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:28px;padding:60px 24px}
+    .hero h1{font-size:clamp(32px, 5vw, 54px);line-height:1.1;margin:0 0 12px}
+    .sub{color:var(--muted);max-width:60ch;margin-bottom:22px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .glow{
+      background: radial-gradient(600px 200px at 30% 0%, rgba(231,194,135,.15), transparent),
+                  linear-gradient(180deg, rgba(18,26,46,.6), rgba(18,26,46,.3));
+      border:1px solid rgba(231,194,135,.25);
+      border-radius: var(--radius);
+      padding:12px;box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), var(--shadow);
+    }
+    .hero-card{aspect-ratio: 4/3; border-radius: var(--radius); overflow:hidden; position:relative}
+    .hero-card img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.05)}
+    .label{position:absolute;left:16px;bottom:16px;background:rgba(0,0,0,.5);padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12)}
+
+    /* ---------- Categories ---------- */
+    .section{padding:36px 24px}
+    .section h2{font-size:clamp(22px, 3vw, 32px);margin:0 0 14px}
+    .categories{display:flex;flex-wrap:wrap;gap:10px}
+    .categories .pill{cursor:pointer}
+
+    /* ---------- Grid ---------- */
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .card{background:linear-gradient(180deg,#0f172a,#0b1226);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);position:relative}
+    .card .media{aspect-ratio:1/1;overflow:hidden}
+    .card img{width:100%;height:100%;object-fit:cover;transition: transform .6s ease}
+    .card:hover img{transform: scale(1.06)}
+    .card .content{padding:14px}
+    .price{display:flex;align-items:center;gap:8px}
+    .price .old{text-decoration:line-through;color:var(--muted);font-size:14px}
+    .chip{font-size:12px;border:1px solid rgba(231,194,135,.4);padding:4px 8px;border-radius:999px;color:var(--accent)}
+    .actions{display:flex;gap:8px;margin-top:10px}
+
+    /* ---------- Showcase Banner ---------- */
+    .banner{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center;background:linear-gradient(120deg, rgba(231,194,135,.18), rgba(167,139,250,.14));border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);padding:18px}
+    .banner img{width:100%;border-radius:14px}
+
+    /* ---------- Testimonials ---------- */
+    .testis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .t{background:#0f172a;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
+    .stars{letter-spacing:1px}
+
+    /* ---------- Newsletter ---------- */
+    .newsletter{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:#0f172a;border:1px dashed rgba(231,194,135,.4);border-radius:var(--radius);padding:16px}
+    .newsletter input{background:#0b1226;border:1px solid rgba(255,255,255,.1);color:var(--text);padding:12px;border-radius:12px;min-width:260px}
+
+    /* ---------- Footer ---------- */
+    footer{padding:28px 24px;color:var(--muted);border-top:1px solid rgba(255,255,255,.08)}
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 990px){
+      .hero{grid-template-columns:1fr;}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .banner{grid-template-columns:1fr}
+      .testis{grid-template-columns:1fr 1fr}
+      .search{display:none}
+    }
+    @media (max-width: 560px){
+      .grid{grid-template-columns:1fr}
+      .nav{display:none}
+      .hamburger{display:inline-flex}
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 2l3.2 6.5 7.1 1-5.1 5 1.3 7.1L12 18.6 5.5 21.6 6.8 14.5 1.7 9.5l7.1-1L12 2z" stroke="url(#g)" stroke-width="1.2"/>
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="24" y2="24">
+            <stop stop-color="#e7c287"/><stop offset="1" stop-color="#a78bfa"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span>SID Jewellery</span>
+    </div>
+    <nav class="nav">
+      <a href="#new">New Arrivals</a>
+      <a href="#rings">Rings</a>
+      <a href="#necklaces">Necklaces</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="search">
+      <input class="input" type="search" placeholder="Search rings, sets, gemstones…" />
+      <button class="btn" id="searchBtn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search
+      </button>
+    </div>
+    <button class="icon-btn hamburger" id="menuBtn" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a class="icon-btn cart-indicator" href="#" id="openCart" aria-label="Open cart">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h7.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="badge" id="cartCount">0</span>
+    </a>
+  </header>
+
+  <!-- Hero -->
+  <section class="container hero" id="new">
+    <div>
+      <div class="glow" style="display:inline-block;margin-bottom:12px">Spring ’25 Capsule • <span class="chip" style="margin-left:8px">New</span></div>
+      <h1>Timeless jewellery, crafted to shine.</h1>
+      <p class="sub">Discover rings, necklaces, and sets forged with care. Ethical materials, lifetime finish, and designs that turn everyday moments into statements.</p>
+      <div class="cta">
+        <a class="btn" href="#catalog">Shop Collection</a>
+        <a class="pill" href="#about">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1600&auto=format&fit=crop" alt="Gold ring and necklace on velvet" />
+      <div class="label">Hand‑polished 18K Gold • Hypoallergenic</div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="container section" id="catalog">
+    <h2>Shop by category</h2>
+    <div class="categories" id="filters">
+      <span class="pill" data-filter="all">All</span>
+      <span class="pill" data-filter="ring">Rings</span>
+      <span class="pill" data-filter="necklace">Necklaces</span>
+      <span class="pill" data-filter="earring">Earrings</span>
+      <span class="pill" data-filter="bracelet">Bracelets</span>
+      <span class="pill" data-filter="set">Sets</span>
+    </div>
+  </section>
+
+  <!-- Products Grid -->
+  <section class="container section" id="products">
+    <div class="grid" id="productGrid">
+      <!-- Card 1 -->
+      <article class="card" data-cat="ring">
+        <div class="media"><img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop" alt="Solitaire Gold Ring"/></div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:18px">Solitaire Aureum Ring</h3>
+            <span class="chip">18K</span>
+          </div>
+          <p class="sub" style="margin:.3rem 0 0">Minimal, everyday luxury.</p>
+          <div class="price"><strong>₹12,990</strong><span class="old">₹15,990</span></div>
+          <div class="actions">
+            <button class="btn add" data-name="Solitaire Aureum Ring">Add to Cart</button>
+            <a class="pill" href="#">Details</a>
+          </div>
+        </div>
+      </article>
+      <!-- Card 2 -->
+      <article class="card" data-cat="necklace">
+        <div class="media"><img src="https://images.unsplash.com/photo-1617038260897-3a4e7c8f7a5f?q=80&w=1200&auto=format&fit=crop" alt="Pearl Necklace"/></div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:18px">Luna Freshwater Necklace</h3>
+            <span class="chip">Pearl</span>
+          </div>
+          <p class="sub" style="margin:.3rem 0 0">Hand‑knotted with sterling clasp.</p>
+          <div class="price"><strong>₹9,490</strong></div>
+          <div class="actions">
+            <button class="btn add" data-name="Luna Freshwater Necklace">Add to Cart</button>
+            <a class="pill" href="#">Details</a>
+          </div>
+        </div>
+      </article>
+      <!-- Card 3 -->
+      <article class="card" data-cat="earring">
+        <div class="media"><img src="https://images.unsplash.com/photo-1612214070475-1ff4b03de3d1?q=80&w=1200&auto=format&fit=crop" alt="Hoop Earrings"/></div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:18px">Halo Hoop Earrings</h3>
+            <span class="chip">Hypoallergenic</span>
+          </div>
+          <p class="sub" style="margin:.3rem 0 0">Lightweight shine, all‑day wear.</p>
+          <div class="price"><strong>₹4,990</strong></div>
+          <div class="actions">
+            <button class="btn add" data-name="Halo Hoop Earrings">Add to Cart</button>
+            <a class="pill" href="#">Details</a>
+          </div>
+        </div>
+      </article>
+      <!-- Card 4 -->
+      <article class="card" data-cat="bracelet">
+        <div class="media"><img src="https://images.unsplash.com/photo-1605100804763-3e3e5e2a5a3f?q=80&w=1200&auto=format&fit=crop" alt="Gold Bracelet"/></div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:18px">Aurora Link Bracelet</h3>
+            <span class="chip">Vermeil</span>
+          </div>
+          <p class="sub" style="margin:.3rem 0 0">Solid feel, secure clasp.</p>
+          <div class="price"><strong>₹6,990</strong></div>
+          <div class="actions">
+            <button class="btn add" data-name="Aurora Link Bracelet">Add to Cart</button>
+            <a class="pill" href="#">Details</a>
+          </div>
+        </div>
+      </article>
+      <!-- Card 5 -->
+      <article class="card" data-cat="set">
+        <div class="media"><img src="https://images.unsplash.com/photo-1617037375213-4c1a6ebfb0d0?q=80&w=1200&auto=format&fit=crop" alt="Jewellery Set"/></div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:18px">Regalia Wedding Set</h3>
+            <span class="chip">Limited</span>
+          </div>
+          <p class="sub" style="margin:.3rem 0 0">Curated necklace + earrings.</p>
+          <div class="price"><strong>₹29,990</strong><span class="old">₹34,990</span></div>
+          <div class="actions">
+            <button class="btn add" data-name="Regalia Wedding Set">Add to Cart</button>
+            <a class="pill" href="#">Details</a>
+          </div>
+        </div>
+      </article>
+      <!-- Card 6 -->
+      <article class="card" data-cat="ring">
+        <div class="media"><img src="https://images.unsplash.com/photo-1520962922320-2038eebab146?q=80&w=1200&auto=format&fit=crop" alt="Gemstone Ring"/></div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:18px">Azure Gemstone Ring</h3>
+            <span class="chip">Sapphire</span>
+          </div>
+          <p class="sub" style="margin:.3rem 0 0">Vivid stone, delicate prongs.</p>
+          <div class="price"><strong>₹18,990</strong></div>
+          <div class="actions">
+            <button class="btn add" data-name="Azure Gemstone Ring">Add to Cart</button>
+            <a class="pill" href="#">Details</a>
+          </div>
+        </div>
+      </article>
+      <!-- Card 7 -->
+      <article class="card" data-cat="necklace">
+        <div class="media"><img src="https://images.unsplash.com/photo-1616864504236-8c9a2b8f2e1d?q=80&w=1200&auto=format&fit=crop" alt="Pendant"/></div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:18px">Stella Pendant</h3>
+            <span class="chip">925 Silver</span>
+          </div>
+          <p class="sub" style="margin:.3rem 0 0">Everyday sparkle pendant.</p>
+          <div class="price"><strong>₹3,990</strong></div>
+          <div class="actions">
+            <button class="btn add" data-name="Stella Pendant">Add to Cart</button>
+            <a class="pill" href="#">Details</a>
+          </div>
+        </div>
+      </article>
+      <!-- Card 8 -->
+      <article class="card" data-cat="earring">
+        <div class="media"><img src="https://images.unsplash.com/photo-1612214070475-1ff4b03de3d1?q=80&w=1200&auto=format&fit=crop" alt="Stud Earrings"/></div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:18px">Nova Studs</h3>
+            <span class="chip">14K</span>
+          </div>
+          <p class="sub" style="margin:.3rem 0 0">Classic studs, secure back.</p>
+          <div class="price"><strong>₹2,490</strong></div>
+          <div class="actions">
+            <button class="btn add" data-name="Nova Studs">Add to Cart</button>
+            <a class="pill" href="#">Details</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Showcase Banner -->
+  <section class="container section banner">
+    <div>
+      <h2>Handcrafted • Ethical • Guaranteed</h2>
+      <p class="sub">We source recycled gold and conflict‑free stones. Every piece carries a 2‑year warranty and free lifetime polishing.</p>
+      <div class="cta">
+        <a class="btn" href="#about">Learn More</a>
+        <a class="pill" href="#contact">Book a Visit</a>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1516637090014-cb1ab0d08fc7?q=80&w=1600&auto=format&fit=crop" alt="Craftsman polishing jewellery"/>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="container section">
+    <h2>What clients say</h2>
+    <div class="testis">
+      <div class="t"><div class="stars">★★★★★</div><p>“Exquisite finish. The ring looks even better in person!”</p><small class="sub">— Aisha K.</small></div>
+      <div class="t"><div class="stars">★★★★★</div><p>“Fast delivery and beautiful packaging. Loved the pendant.”</p><small class="sub">— Rohan S.</small></div>
+      <div class="t"><div class="stars">★★★★☆</div><p>“Great quality for the price. Will shop again.”</p><small class="sub">— Neha P.</small></div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="container section" id="about">
+    <h2>About Lumina</h2>
+    <p class="sub">Founded in Jaipur, our studio blends traditional techniques with modern forms. Each piece is designed for comfort, longevity, and effortless elegance.</p>
+  </section>
+
+  <!-- Newsletter / Contact -->
+  <section class="container section" id="contact">
+    <div class="newsletter">
+      <div>
+        <h3 style="margin:0 0 6px">Join the inner circle</h3>
+        <p class="sub" style="margin:0">Get early access, style tips, and exclusive offers.</p>
+      </div>
+      <form onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+        <input type="email" required placeholder="Your email" />
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="container">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+      <div>© <span id="year"></span> Lumina Jewellery • All rights reserved</div>
+      <div style="display:flex;gap:12px">
+        <a class="pill" href="#">Shipping</a>
+        <a class="pill" href="#">Returns</a>
+        <a class="pill" href="#">Care</a>
+        <a class="pill" href="#">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer (simple) -->
+  <div id="cartDrawer" style="position:fixed;inset:0 0 0 auto; width:min(420px, 92vw); background:#0b1226; border-left:1px solid rgba(255,255,255,.1); transform: translateX(110%); transition: transform .35s ease; z-index:60; display:flex; flex-direction:column;">
+    <div style="padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08)">
+      <strong>Cart</strong>
+      <button class="pill" id="closeCart">Close</button>
+    </div>
+    <div id="cartItems" style="padding:16px;display:grid;gap:10px;overflow:auto;flex:1"></div>
+    <div style="padding:16px;border-top:1px solid rgba(255,255,255,.08)">
+      <button class="btn" style="width:100%" onclick="alert('Checkout stub — integrate your gateway')">Checkout</button>
+    </div>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu: simple scroll to top with quick nav reveal (for demo)
+    const menuBtn = document.getElementById('menuBtn');
+    menuBtn && menuBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      alert('Use the links in the sticky bar to navigate.');
+    });
+
+    // Filtering
+    const pills = document.querySelectorAll('#filters .pill');
+    const cards = document.querySelectorAll('#productGrid .card');
+    pills.forEach(p => p.addEventListener('click', () => {
+      const f = p.dataset.filter;
+      pills.forEach(x => x.style.borderColor = 'rgba(255,255,255,.12)');
+      p.style.borderColor = 'var(--accent)';
+      cards.forEach(c => {
+        c.style.display = (f === 'all' || c.dataset.cat === f) ? 'block' : 'none';
+      });
+    }));
+
+    // Simple search stub
+    const searchBtn = document.getElementById('searchBtn');
+    const inputEl = document.querySelector('.input');
+    searchBtn && searchBtn.addEventListener('click', () => {
+      const q = (inputEl?.value || '').toLowerCase();
+      if(!q){ alert('Type to search (e.g., ring, pearl, gold)'); return; }
+      cards.forEach(c => {
+        const text = c.textContent.toLowerCase();
+        c.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    });
+
+    // Cart logic (lightweight)
+    const cartBtn = document.getElementById('openCart');
+    const closeCart = document.getElementById('closeCart');
+    const drawer = document.getElementById('cartDrawer');
+    const itemsEl = document.getElementById('cartItems');
+    const countEl = document.getElementById('cartCount');
+    let count = 0;
+
+    function openDrawer(){ drawer.style.transform = 'translateX(0)'; }
+    function hideDrawer(){ drawer.style.transform = 'translateX(110%)'; }
+
+    cartBtn && cartBtn.addEventListener('click', (e)=>{ e.preventDefault(); openDrawer(); });
+    closeCart && closeCart.addEventListener('click', hideDrawer);
+
+    document.querySelectorAll('.add').forEach(btn => btn.addEventListener('click', () => {
+      const name = btn.dataset.name;
+      count += 1; countEl.textContent = count;
+      const row = document.createElement('div');
+      row.className = 'glow';
+      row.style.display = 'flex';
+      row.style.alignItems = 'center';
+      row.style.justifyContent = 'space-between';
+      row.style.gap = '10px';
+      row.innerHTML = `<span>${name}</span><button class="pill" onclick="this.parentElement.remove(); count -= 1; countEl.textContent = count;">Remove</button>`;
+      itemsEl.appendChild(row);
+      openDrawer();
+    }));
+  </script>
+</body>
+</html>
