@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Settings</title>
+  <link rel="stylesheet" href="setting.css">
+</head>
+<body>
+
+  <div class="settings-container">
+    <h1>🎮 Game Settings</h1>
+
+    <div class="setting-group">
+      <label for="graphics">Graphics Quality</label>
+      <select id="graphics">
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+        <option>Ultra</option>
+      </select>
+    </div>
+
+    <div class="setting-group">
+      <label for="sound">Sound Volume</label>
+      <input type="range" id="sound" min="0" max="100" value="75">
+    </div>
+
+    <div class="setting-group">
+      <label for="music">Music Volume</label>
+      <input type="range" id="music" min="0" max="100" value="50">
+    </div>
+
+    <div class="setting-group">
+      <label for="difficulty">Difficulty</label>
+      <select id="difficulty">
+        <option>Easy</option>
+        <option>Normal</option>
+        <option>Hard</option>
+        <option>Insane</option>
+      </select>
+    </div>
+
+    <div class="setting-group">
+      <label for="controls">Control Scheme</label>
+      <select id="controls">
+        <option>Keyboard & Mouse</option>
+        <option>Gamepad</option>
+      </select>
+    </div>
+
+    <button class="btn">Apply Settings</button>
+  </div>
+
+</body>
+</html>
