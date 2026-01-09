@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>श्रीकृष्ण जन्माष्टमी | Krishna Janmashtami</title>
+  <meta name="description" content="A beautiful festive landing page for Krishna Janmashtami with countdown, schedule, aarti lyrics, and gallery." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220;         /* deep night */
+      --bg2:#111a2e;
+      --gold:#f2c14e;
+      --saffron:#ff9933;
+      --peacock:#1aa3a3;
+      --violet:#7c3aed;
+      --rose:#ef476f;
+      --card:#131b2e;
+      --muted:#97a3b6;
+      --text:#e7eefc;
+      --accent:#00d4ff;
+      --ring:#ffd166;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto; color:var(--text); background: radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,.25), transparent 60%), radial-gradient(900px 500px at 10% 0%, rgba(26,163,163,.25), transparent 60%), linear-gradient(180deg,var(--bg),var(--bg2));
+      line-height:1.6; overflow-x:hidden;
+    }
+    a{color:inherit}
+    .container{max-width:1100px; margin-inline:auto; padding:0 1.2rem}
+
+    /* Header */
+    header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(10px); background:rgba(10,15,30,.6); border-bottom:1px solid rgba(255,255,255,.08)}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
+    .brand{display:flex; align-items:center; gap:.7rem}
+    .brand svg{width:34px; height:34px}
+    .brand h1{font-family:'Yeseva One', serif; font-size:1.25rem; letter-spacing:.5px; margin:0}
+    .actions{display:flex; gap:.6rem}
+    .btn{border:1px solid rgba(255,255,255,.12); color:var(--text); background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02)); padding:.6rem .9rem; border-radius:14px; cursor:pointer; transition:.25s ease; font-weight:600}
+    .btn:hover{transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.08)}
+    .btn.primary{border-color:rgba(255,209,102,.6); background:linear-gradient(180deg, rgba(255,209,102,.25), rgba(255,209,102,.12)); color:#1a1200}
+
+    /* Hero */
+    .hero{position:relative; padding:4rem 0 2.5rem}
+    .hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:2rem; align-items:center}
+    .title{font-family:'Yeseva One',serif; font-size:clamp(1.8rem, 3.2vw + 1rem, 3rem); line-height:1.2; margin:.2rem 0 1rem}
+    .subtitle{color:var(--muted); max-width:60ch}
+    .chip{display:inline-flex; align-items:center; gap:.5rem; background:linear-gradient(90deg, rgba(255,153,51,.25), rgba(242,193,78,.25)); color:#221a00; border:1px solid rgba(242,193,78,.5); padding:.35rem .7rem; border-radius:999px; font-weight:700; text-transform:uppercase; letter-spacing:.6px}
+
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.1); border-radius:22px; padding:1rem; position:relative; overflow:hidden}
+    .glass{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.1); border-radius:18px}
+    .countdown{display:flex; gap:10px; justify-content:center; padding:1rem}
+    .timebox{min-width:90px; padding:.9rem .5rem; text-align:center; border-radius:16px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(124,58,237,.20), rgba(124,58,237,.04))}
+    .timebox h3{margin:0; font-size:1.8rem}
+    .timebox span{font-size:.8rem; color:var(--muted)}
+
+    /* Schedule */
+    section{padding:3rem 0}
+    h2{font-family:'Yeseva One',serif; font-weight:700; font-size:2rem; margin:0 0 1rem}
+    .schedule{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+    .card{padding:1rem; border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08)}
+    .card h3{margin:.2rem 0 .4rem}
+    .card p{margin:.1rem 0; color:var(--muted)}
+
+    /* Aarti */
+    .aarti{display:grid; grid-template-columns:1.1fr .9fr; gap:1.2rem; align-items:start}
+    .lyrics{white-space:pre-wrap; background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.08); padding:1rem; border-radius:14px; font-size:1rem}
+
+    /* Gallery */
+    .gallery{display:grid; grid-template-columns:repeat(6,1fr); gap:.75rem}
+    .gallery img{width:100%; height:160px; object-fit:cover; border-radius:14px; border:1px solid rgba(255,255,255,.08)}
+
+    /* Footer */
+    footer{padding:2rem 0; color:var(--muted); border-top:1px dashed rgba(255,255,255,.1)}
+
+    /* Ornaments */
+    .peacock{position:absolute; inset:auto -40px -40px auto; width:min(44vw,520px); opacity:.18; filter:drop-shadow(0 10px 20px rgba(0,0,0,.35))}
+    .flute{position:absolute; top:-20px; left:-25px; width:220px; opacity:.25; transform:rotate(-8deg)}
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero-grid, .aarti{grid-template-columns:1fr}
+      .schedule{grid-template-columns:1fr 1fr}
+      .gallery{grid-template-columns:repeat(3,1fr)}
+      .peacock{display:none}
+    }
+    @media (max-width: 560px){
+      .schedule{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      .timebox{min-width:70px}
+    }
+
+    /* Toggle */
+    .toggle{display:inline-flex; align-items:center; gap:.5rem; font-size:.9rem}
+    .switch{appearance:none; width:52px; height:30px; border-radius:999px; border:1px solid rgba(255,255,255,.15); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); position:relative; cursor:pointer; transition:.25s}
+    .switch::after{content:""; position:absolute; top:3px; left:3px; width:24px; height:24px; border-radius:50%; background:var(--ring); transition:.25s}
+    .switch:checked{background:linear-gradient(180deg, rgba(255,209,102,.35), rgba(255,209,102,.12))}
+    .switch:checked::after{left:25px}
+
+    /* Focus ring */
+    .btn:focus, .switch:focus{outline:none; box-shadow:0 0 0 3px rgba(255,209,102,.35)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand" aria-label="Brand">
+        <!-- Simple peacock feather icon -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M34 6c-6 9-7 21-2 28 5 7 14 8 20 3 6-5 6-14-1-19-6-5-15-7-17-12z" fill="#1aa3a3"/>
+          <circle cx="44" cy="24" r="6" fill="#7c3aed"/>
+          <circle cx="44" cy="24" r="3" fill="#00d4ff"/>
+        </svg>
+        <h1>श्रीकृष्ण जन्माष्टमी</h1>
+      </div>
+      <div class="actions">
+        <label class="toggle" title="Decorations">
+          <input type="checkbox" class="switch" id="decorToggle" checked>
+          <span>सजावट</span>
+        </label>
+        <button class="btn primary" onclick="document.getElementById('aarti').scrollIntoView({behavior:'smooth'})">आरती देखें</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <img class="flute" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 40'><rect x='0' y='16' width='300' height='8' rx='4' fill='%23C8A15E'/><circle cx='50' cy='20' r='3' fill='%238A6A3B'/><circle cx='90' cy='20' r='3' fill='%238A6A3B'/><circle cx='130' cy='20' r='3' fill='%238A6A3B'/><circle cx='170' cy='20' r='3' fill='%238A6A3B'/><circle cx='210' cy='20' r='3' fill='%238A6A3B'/><circle cx='250' cy='20' r='3' fill='%238A6A3B'/></svg>" alt="Bansuri">
+      <div class="container hero-grid">
+        <div>
+          <span class="chip">\u0939\u093e\u0930\u094d\u0926\u093f\u0915 \u0936\u0941\u092d\u0915\u093e\u092e\u0928\u093e</span>
+          <h2 class="title">जय श्री कृष्ण!<br/>व्रत, पूजा और झाँकी के साथ जन्माष्टमी महोत्सव</h2>
+          <p class="subtitle">इस पेज में काउंटडाउन, कार्यक्रम समय, आरती/मंत्र और एक छोटी गैलरी शामिल है। आप इसे मंदिर/क्लब/स्कूल इवेंट के लिए उपयोग कर सकते हैं। तारीख को नीचे सेट करें।</p>
+          <div style="display:flex; gap:.6rem; margin-top:1rem">
+            <a class="btn" href="#schedule">कार्यक्रम</a>
+            <a class="btn" href="#gallery">गैलरी</a>
+          </div>
+        </div>
+        <div class="hero-card" role="group" aria-labelledby="cd-title">
+          <h3 id="cd-title" style="text-align:center; margin:.3rem 0 .6rem">जन्माष्टमी तक शेष समय</h3>
+          <div class="countdown" id="countdown" aria-live="polite">
+            <div class="timebox"><h3 id="d">–</h3><span>दिन</span></div>
+            <div class="timebox"><h3 id="h">–</h3><span>घंटे</span></div>
+            <div class="timebox"><h3 id="m">–</h3><span>मिनट</span></div>
+            <div class="timebox"><h3 id="s">–</h3><span>सेकंड</span></div>
+          </div>
+          <div class="glass" style="padding:.8rem; margin:.6rem 0 0; display:flex; gap:.6rem; align-items:center; justify-content:center">
+            <label for="date">तारीख चुनें:</label>
+            <input id="date" type="datetime-local" />
+            <button class="btn" id="setDate">सेट करें</button>
+          </div>
+          <img class="peacock" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g' cx='50%' cy='50%'><stop offset='0%' stop-color='%2300d4ff'/><stop offset='100%' stop-color='%237c3aed' stop-opacity='.25'/></radialGradient></defs><ellipse cx='200' cy='160' rx='180' ry='110' fill='url(%23g)'/></svg>" alt="Peacock halo"/>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schedule -->
+    <section id="schedule">
+      <div class="container">
+        <h2>कार्यक्रम (Schedule)</h2>
+        <div class="schedule">
+          <div class="card">
+            <h3>मंगलाचरण</h3>
+            <p>शाम 6:00</p>
+            <p>गौरी गणेश वंदना, दीप प्रज्वलन</p>
+          </div>
+          <div class="card">
+            <h3>भजन संध्या</h3>
+            <p>शाम 7:00 – 8:30</p>
+            <p>कीर्तन व भक्ति गीत</p>
+          </div>
+          <div class="card">
+            <h3>झूलन व आरती</h3>
+            <p>रात 11:45</p>
+            <p>मध्यरात्रि जन्मोत्सव, प्रसाद वितरण</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Aarti / Mantra -->
+    <section id="aarti">
+      <div class="container aarti">
+        <div>
+          <h2>आरती व मंत्र</h2>
+          <div class="lyrics" aria-label="Aarti lyrics">
+श्री कृष्ण गोविन्द हरे मुरारी,
+हे नाथ नारायण वासुदेव।
+
+वसुदेवसुतं देवं, कंसचाणूरमर्दनम्।
+देवकीपरमानन्दं, कृष्णं वन्दे जगद्गुरुम्॥
+
+हरे कृष्ण हरे कृष्ण, कृष्ण कृष्ण हरे हरे,
+हरे राम हरे राम, राम राम हरे हरे॥
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">व्रत/पूजा सुझाव</h3>
+          <ul>
+            <li>सफाई, सजावट और झाँकी की तैयारी पहले से करें।</li>
+            <li>फूल, तुलसी, माखन-मिश्री, पञ्चामृत रखें।</li>
+            <li>मध्यरात्रि 12 बजे जन्म आरती करें, प्रसाद बाँटें।</li>
+            <li>सामूहिक कीर्तन और कृष्ण लीलाएँ आयोजित करें।</li>
+          </ul>
+          <div style="margin-top:.6rem">
+            <button class="btn" onclick="window.print()">पेज प्रिंट करें</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery">
+      <div class="container">
+        <h2>गैलरी</h2>
+        <div class="gallery" aria-label="Festival images">
+          <img src="https://images.unsplash.com/photo-1608737632120-1d2d3f26c7aa?q=80&w=1200&auto=format&fit=crop" alt="Matki decoration">
+          <img src="https://images.unsplash.com/photo-1623076975818-f9ca52033d2e?q=80&w=1200&auto=format&fit=crop" alt="Flute and peacock feather">
+          <img src="https://images.unsplash.com/photo-1625076894083-0f2a7bc01db2?q=80&w=1200&auto=format&fit=crop" alt="Temple diya">
+          <img src="https://images.unsplash.com/photo-1606925797300-0cbd7cdbaff8?q=80&w=1200&auto=format&fit=crop" alt="Bhajan night">
+          <img src="https://images.unsplash.com/photo-1604931156619-bb533dce46a2?q=80&w=1200&auto=format&fit=crop" alt="Peacock feather close up">
+          <img src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?q=80&w=1200&auto=format&fit=crop" alt="Butter and makhan mishri">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex; gap:1rem; justify-content:space-between; align-items:center; flex-wrap:wrap">
+      <div>© <span id="year"></span> Janmashtami Seva Committee • जय श्री कृष्ण</div>
+      <div style="display:flex; gap:.6rem">
+        <a class="btn" href="#" onclick="sharePage(event)">Share</a>
+        <a class="btn" href="#top">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Toggle decorations (peacock + flute)
+    const toggle = document.getElementById('decorToggle');
+    toggle.addEventListener('change', ()=>{
+      document.querySelectorAll('.peacock,.flute').forEach(el=>{
+        el.style.display = toggle.checked ? 'block' : 'none';
+      })
+    });
+
+    // Countdown
+    let targetDate = null; // will be set by user
+
+    function startCountdown(){
+      const dEl = document.getElementById('d');
+      const hEl = document.getElementById('h');
+      const mEl = document.getElementById('m');
+      const sEl = document.getElementById('s');
+      function tick(){
+        if(!targetDate){ dEl.textContent=hEl.textContent=mEl.textContent=sEl.textContent='–'; return; }
+        const now = new Date();
+        const diff = targetDate - now;
+        if(diff <= 0){ dEl.textContent=hEl.textContent=mEl.textContent=sEl.textContent='00'; return; }
+        const sec = Math.floor(diff/1000);
+        const days = Math.floor(sec / 86400);
+        const hrs = Math.floor((sec % 86400) / 3600);
+        const mins = Math.floor((sec % 3600) / 60);
+        const secs = sec % 60;
+        dEl.textContent = String(days).padStart(2,'0');
+        hEl.textContent = String(hrs).padStart(2,'0');
+        mEl.textContent = String(mins).padStart(2,'0');
+        sEl.textContent = String(secs).padStart(2,'0');
+      }
+      tick();
+      return setInterval(tick, 1000);
+    }
+    let timer = startCountdown();
+
+    document.getElementById('setDate').addEventListener('click', ()=>{
+      const input = document.getElementById('date').value; // YYYY-MM-DDTHH:mm
+      if(!input) { alert('कृपया तारीख/समय चुनें।'); return; }
+      targetDate = new Date(input);
+      clearInterval(timer);
+      timer = startCountdown();
+    });
+
+    // Share API
+    async function sharePage(e){
+      e.preventDefault();
+      try{
+        if(navigator.share){
+          await navigator.share({title:document.title, text:'Krishna Janmashtami Festive Page', url:location.href});
+        }else{
+          await navigator.clipboard.writeText(location.href);
+          alert('Link copied to clipboard');
+        }
+      }catch(err){ console.log(err); }
+    }
+  </script>
+</body>
+</html>
